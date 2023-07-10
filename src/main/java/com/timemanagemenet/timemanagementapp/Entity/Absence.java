@@ -1,5 +1,4 @@
 package com.timemanagemenet.timemanagementapp.Entity;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +19,5 @@ public class Absence {
     private LocalDate absenceDate;
     private AbsenceType absenceType;
 
-
+    private String keycloakUserId;
 }
