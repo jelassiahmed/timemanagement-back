@@ -1,9 +1,10 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -14,5 +15,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long postId;
     private String postName;
+
+    @ElementCollection
+    @CollectionTable(name = "user_ids", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "user_id")
+    private List<String> userIds;
+
 
 }

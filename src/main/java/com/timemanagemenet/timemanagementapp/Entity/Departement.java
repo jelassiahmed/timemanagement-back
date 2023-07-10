@@ -1,9 +1,10 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,5 +16,10 @@ public class Departement {
     private Long departementId;
     private String departementName;
     private long departementManagerId;
+
+    @ElementCollection
+    @CollectionTable(name = "user_ids", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "user_id")
+    private List<String> userIds;
 
 }

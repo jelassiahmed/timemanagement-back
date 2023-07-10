@@ -1,7 +1,6 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.Date;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,10 +31,8 @@ public class Attendance {
 
     private LocalDate attendanceDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id")
-    private Employee user;
+    @Column(name = "keycloak_user_id")
+    private String keycloakUserId;
 
 
 }

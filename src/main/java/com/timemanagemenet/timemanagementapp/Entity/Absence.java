@@ -1,9 +1,9 @@
 package com.timemanagemenet.timemanagementapp.Entity;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -19,5 +19,6 @@ public class Absence {
     private LocalDate absenceDate;
     private AbsenceType absenceType;
 
+    @Column(name = "keycloak_user_id")
     private String keycloakUserId;
 }
