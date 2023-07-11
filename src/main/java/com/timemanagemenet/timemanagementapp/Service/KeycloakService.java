@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class KeycloakService {
-    private final Keycloak keycloak;
+   /* private final Keycloak keycloak;
 
     @Autowired
     public KeycloakService(Keycloak keycloak) {
@@ -30,5 +30,5 @@ public class KeycloakService {
             // Handle any exceptions
         }
         return null;
-    }
+    }*/
 }

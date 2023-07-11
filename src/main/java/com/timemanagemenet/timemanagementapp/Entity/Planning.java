@@ -47,4 +47,5 @@ public class Planning {
     @JsonIgnoreProperties(value ={"plannings"} , allowSetters = true)
     private Schedule schedule;
 
+
 }

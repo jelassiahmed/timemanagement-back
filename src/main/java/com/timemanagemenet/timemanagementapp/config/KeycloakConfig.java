@@ -28,8 +28,11 @@ public class KeycloakConfig {
                 .realm(keycloakProperties.getRealm())
                 .clientId(keycloakProperties.getResource())
                 .clientSecret(getClientSecret())
+                .username(keycloakProperties.getPrincipalAttribute())
+                .password(keycloakProperties.getCredentials().get("secret").toString()) // Use 'secret' instead of 'password'
                 .build();
     }
+
 
     private String getClientSecret() {
         Map<String, Object> credentials = keycloakProperties.getCredentials();
@@ -38,5 +41,6 @@ public class KeycloakConfig {
         }
         return null;
     }
+
 
 }

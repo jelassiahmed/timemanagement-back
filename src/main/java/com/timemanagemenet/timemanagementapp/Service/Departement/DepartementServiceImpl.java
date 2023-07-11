@@ -4,6 +4,7 @@ import com.timemanagemenet.timemanagementapp.Repository.DepartementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ public class DepartementServiceImpl implements DepartementService {
 
     @Override
     public List<Departement> getDepartementsByUserId(String userId) {
-        return departementRepository.findByKeycloakUserId(userId);
+        List<String> userIds = Collections.singletonList(userId);
+        return departementRepository.findBykeycloakUserIdIn(userIds);
     }
 }

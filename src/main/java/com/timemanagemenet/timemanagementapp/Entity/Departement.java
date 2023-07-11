@@ -18,8 +18,8 @@ public class Departement {
     private long departementManagerId;
 
     @ElementCollection
-    @CollectionTable(name = "user_ids", joinColumns = @JoinColumn(name = "post_id"))
-    @Column(name = "user_id")
-    private List<String> userIds;
+    @CollectionTable(name = "departement_user_ids", joinColumns = @JoinColumn(name = "departement_id"))
+    @Column(name = "keycloak_user_id")
+    private List<String> keycloakUserId;
 
 }

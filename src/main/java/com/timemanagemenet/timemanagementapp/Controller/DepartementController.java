@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/departments")
 public class DepartementController {
-    private final DepartementService departementService;
+   /* private final DepartementService departementService;
     private final KeycloakService keycloakService;
 
     @Autowired
@@ -90,11 +90,11 @@ public class DepartementController {
 
     private boolean isDepartementOwner(Departement departement, KeycloakAuthenticationToken authentication) {
         String userId = getUserId(authentication);
-        return departement.getUserIds().contains(userId);
+        return departement.getKeycloakUserId().contains(userId);
     }
 
     private String getUserId(KeycloakAuthenticationToken authentication) {
         String username = authentication.getName();
         return keycloakService.getUserIdByUsername(username);
     }
-}
+*/}
