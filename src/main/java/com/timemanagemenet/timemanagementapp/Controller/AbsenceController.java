@@ -53,17 +53,40 @@ public class AbsenceController {private final AbsenceService absenceService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String keycloakUserId = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
         // Ensure the authenticated user can only see their own absence
-        if (!absence.getKeycloakUserId().equals(keycloakUserId)) {
+        if (!absence.getKeycloakUserId().equals(keycloakUserId) || !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).header("X-User-ID", keycloakUserId).build();
         }
 
         return ResponseEntity.ok(absence);
     }
+
+    @PutMapping("/{id}/reclamation")
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+    public ResponseEntity<Absence> addReclamation(@PathVariable("id") Long id, @RequestParam("description") String description) {
+        Absence absence = absenceService.getAbsenceById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String keycloakUserId = authentication.getName();
+        Absence updatedAbsence = absenceService.addReclamation(id, description);
+        if (!absence.getKeycloakUserId().equals(keycloakUserId) || updatedAbsence == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedAbsence);
+    }
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Absence> createAbsence(@RequestBody Absence absence) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Absence createdAbsence = absenceService.createAbsence(absence);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAbsence);
     }
@@ -74,6 +97,14 @@ public class AbsenceController {private final AbsenceService absenceService;
         Absence existingAbsence = absenceService.getAbsenceById(id);
         if (existingAbsence == null) {
             return ResponseEntity.notFound().build();
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         Absence updatedAbsence = absenceService.updateAbsence(id, absence);
@@ -86,6 +117,14 @@ public class AbsenceController {private final AbsenceService absenceService;
         Absence absence = absenceService.getAbsenceById(id);
         if (absence == null) {
             return ResponseEntity.notFound().build();
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         absenceService.deleteAbsence(id);

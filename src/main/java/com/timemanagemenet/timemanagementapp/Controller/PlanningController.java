@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,14 @@ public class PlanningController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Planning> createPlanning(@RequestBody Planning planning) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Planning createdPlanning = planningService.savePlanning(planning);
         return ResponseEntity.ok(createdPlanning);
     }
@@ -30,6 +39,14 @@ public class PlanningController {
     @PutMapping("/{planningId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Planning> updatePlanning(@PathVariable Long planningId, @RequestBody Planning planning) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Planning existingPlanning = planningService.getPlanningById(planningId);
         if (existingPlanning == null) {
             return ResponseEntity.notFound().build();
@@ -41,6 +58,14 @@ public class PlanningController {
     @DeleteMapping("/{planningId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deletePlanning(@PathVariable Long planningId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Planning existingPlanning = planningService.getPlanningById(planningId);
         if (existingPlanning == null) {
             return ResponseEntity.notFound().build();
@@ -52,6 +77,14 @@ public class PlanningController {
     @GetMapping("/{planningId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Planning> getPlanningById(@PathVariable Long planningId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Planning planning = planningService.getPlanningById(planningId);
         if (planning == null) {
             return ResponseEntity.notFound().build();

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,14 @@ public class ScheduleController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Schedule>> getAllSchedules() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         List<Schedule> schedules = scheduleService.getAllSchedules();
         return new ResponseEntity<>(schedules, HttpStatus.OK);
     }
@@ -30,6 +40,14 @@ public class ScheduleController {
     @GetMapping("/{scheduleId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Schedule> getScheduleById(@PathVariable Long scheduleId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Schedule schedule = scheduleService.getScheduleById(scheduleId);
         if (schedule != null) {
             return new ResponseEntity<>(schedule, HttpStatus.OK);
@@ -41,6 +59,14 @@ public class ScheduleController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Schedule> createSchedule(@RequestBody Schedule schedule) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Schedule createdSchedule = scheduleService.createSchedule(schedule);
         return new ResponseEntity<>(createdSchedule, HttpStatus.CREATED);
     }
@@ -48,6 +74,14 @@ public class ScheduleController {
     @PutMapping("/{scheduleId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Schedule> updateSchedule(@PathVariable Long scheduleId, @RequestBody Schedule schedule) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Schedule updatedSchedule = scheduleService.updateSchedule(scheduleId, schedule);
         if (updatedSchedule != null) {
             return new ResponseEntity<>(updatedSchedule, HttpStatus.OK);
@@ -59,6 +93,14 @@ public class ScheduleController {
     @DeleteMapping("/{scheduleId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         scheduleService.deleteSchedule(scheduleId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

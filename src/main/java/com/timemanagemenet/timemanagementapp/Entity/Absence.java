@@ -2,23 +2,55 @@ package com.timemanagemenet.timemanagementapp.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
+@Table(name="ABSENCE")
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE  ABSENCE SET is_deleted = 1 where=?")
+@Where(clause = "is_deleted=0")
 @Entity
 @Data
-public class Absence {
+public class Absence  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_absence")
     private Long idAbsence;
 
+    @Column(name = "absence_date")
     private LocalDate absenceDate;
-    private AbsenceType absenceType;
+
+    @Column(name = "absence_type")
+    private String absenceType;
 
     @Column(name = "keycloak_user_id")
     private String keycloakUserId;
+
+    @Column(name = "reclamation")
+    private Boolean reclamation;
+
+    @Column(name = "reclamation_description")
+    private String reclamationDescription;
+
+    @Column(name = "is_deleted")
+    private Integer isDeleted;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
 }

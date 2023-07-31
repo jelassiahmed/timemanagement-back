@@ -4,7 +4,11 @@ import com.timemanagemenet.timemanagementapp.Entity.PlanningConfig;
 
 import com.timemanagemenet.timemanagementapp.Service.PlanningConfig.PlanningConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,18 +26,43 @@ public class PlanningConfigController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<PlanningConfig> getAllPlanningConfigs() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return null;
+        }
         return planningConfigService.getAllPlanningConfigs();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PlanningConfig getPlanningConfigById(@PathVariable("id") Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return null;
+        }
         return planningConfigService.getPlanningConfigById(id);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PlanningConfig createPlanningConfig(@RequestBody PlanningConfig planningConfig) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return null;
+        }
         return planningConfigService.createPlanningConfig(planningConfig);
     }
 
@@ -43,6 +72,14 @@ public class PlanningConfigController {
             @PathVariable("id") Long id,
             @RequestBody PlanningConfig planningConfig
     ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            return null;
+        }
         return planningConfigService.updatePlanningConfig(id, planningConfig);
     }
 
