@@ -93,6 +93,7 @@ public class PlanningController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Planning>> getAllPlannings(Authentication authentication) {
         // Retrieve the authenticated user's details
         KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) authentication;

@@ -12,20 +12,25 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @Table(name = "planning_config")
-@SQLDelete(sql = "UPDATE  planning_config SET is_deleted = 1 where=?")
+@SQLDelete(sql = "UPDATE  planning_config SET is_deleted planning_config_id= 1 where=?")
 @Where(clause = "is_deleted=0")
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlanningConfig implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "planning_config_id")
     private Long planningConfigId;
+    @Column(name = "check_in_delay")
     private int checkInDelay;
+    @Column(name = "check_out_delay")
     private int checkOutDelay;
+    @Column(name = "end_check_in")
     private int endCheckIn;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -38,13 +43,13 @@ public class PlanningConfig implements Serializable {
     private Integer isDeleted;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "created_by")
     private String createdBy;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "updated_by")
     private String updatedBy;

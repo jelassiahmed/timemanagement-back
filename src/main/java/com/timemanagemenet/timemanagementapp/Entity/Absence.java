@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name="ABSENCE")
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE  ABSENCE SET is_deleted = 1 where=?")
+@SQLDelete(sql = "UPDATE  ABSENCE SET is_deleted = 1 where id_absence=?")
 @Where(clause = "is_deleted=0")
 @Entity
 @Data
@@ -31,12 +31,6 @@ public class Absence  implements Serializable {
 
     @Column(name = "keycloak_user_id")
     private String keycloakUserId;
-
-    @Column(name = "reclamation")
-    private Boolean reclamation;
-
-    @Column(name = "reclamation_description")
-    private String reclamationDescription;
 
     @Column(name = "is_deleted")
     private Integer isDeleted;

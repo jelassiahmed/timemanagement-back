@@ -2,15 +2,19 @@ package com.timemanagemenet.timemanagementapp.config;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
+import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 
 import java.util.Map;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class KeycloakConfig {
 
     @Autowired
@@ -42,5 +46,8 @@ public class KeycloakConfig {
         return null;
     }
 
-
+    @Bean
+    public SimpleAuthorityMapper simpleAuthorityMapper() {
+        return new SimpleAuthorityMapper();
+    }
 }

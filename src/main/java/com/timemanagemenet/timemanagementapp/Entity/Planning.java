@@ -12,7 +12,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "planning")
-@SQLDelete(sql = "UPDATE  planning SET is_deleted = 1 where=?")
+@SQLDelete(sql = "UPDATE  planning SET is_deleted = 1 where planning_Id=?")
 @Where(clause = "is_deleted=0")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -59,13 +59,13 @@ public class Planning implements Serializable {
     private Integer isDeleted;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "created_by")
     private String createdBy;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "updated_by")
     private String updatedBy;

@@ -5,15 +5,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AbsenceService {
-    List<Absence> getAllAbsences();
-    Absence getAbsenceById(Long id);
-    Absence addReclamation(Long absenceId, String reclamationDescription);
-    Absence createAbsence(Absence absence, @AuthenticationPrincipal Authentication authentication);
-    Absence updateAbsence(Long id, Absence updatedAbsence, @AuthenticationPrincipal Authentication authentication);
-    void deleteAbsence(Long id);
+        Absence getById(Long id);
+        List<Absence> getAll();
+        Absence create(Absence absence);
+        Absence update(Long id, Absence updatedAbsence);
+        void delete(Long id);
 
-    List<Absence> getAbsencesByUser(String keycloakUserId);
+        List<Absence> getAbsencesByUser(String keycloakUserId);
 }

@@ -4,9 +4,9 @@ import com.timemanagemenet.timemanagementapp.Entity.Absence;
 import com.timemanagemenet.timemanagementapp.Repository.AbsenceRepository;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,48 +23,37 @@ public class AbsenceServiceImpl implements AbsenceService {
     }
 
     @Override
-    public List<Absence> getAllAbsences() {
-        return absenceRepository.findAll();
-    }
-
-    @Override
-    public Absence getAbsenceById(Long id) {
+    public Absence getById(Long id) {
         Optional<Absence> absence = absenceRepository.findById(id);
         return absence.orElse(null);
     }
 
     @Override
-    public Absence createAbsence(Absence absence, @AuthenticationPrincipal Authentication authentication) {
-        absence.setReclamation(false);
-        absence.setReclamationDescription(null);
-        absence.setCreatedAt(LocalDateTime.now());
+    public List<Absence> getAll() {
+        return absenceRepository.findAll();
+    }
 
+    @Override
+    public Absence create(Absence absence) {
+
+        absence.setCreatedAt(LocalDateTime.now());
+        absence.setUpdatedAt(LocalDateTime.now());
+        absence.setIsDeleted(0);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal) {
             KeycloakPrincipal<?> keycloakPrincipal = (KeycloakPrincipal<?>) authentication.getPrincipal();
             String createdBy = keycloakPrincipal.getName();
             absence.setCreatedBy(createdBy);
+            absence.setUpdatedBy(createdBy);
         }
-
         return absenceRepository.save(absence);
     }
 
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
     @Override
-    public Absence addReclamation(Long absenceId, String reclamationDescription) {
-        Optional<Absence> existingAbsence = absenceRepository.findById(absenceId);
-        if (existingAbsence.isPresent()) {
-            Absence absence = existingAbsence.get();
-            absence.setReclamation(true);
-            absence.setReclamationDescription(reclamationDescription);
-            return absenceRepository.save(absence);
-        }
-        return null;
-    }
-
-
-    @Override
-    public Absence updateAbsence(Long id, Absence updatedAbsence, @AuthenticationPrincipal Authentication authentication) {
+    public Absence update(Long id, Absence updatedAbsence) {
         Optional<Absence> existingAbsence = absenceRepository.findById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (existingAbsence.isPresent()) {
             Absence absence = existingAbsence.get();
             absence.setUpdatedAt(LocalDateTime.now());
@@ -80,15 +69,10 @@ public class AbsenceServiceImpl implements AbsenceService {
     }
 
     @Override
-    public void deleteAbsence(Long id) {
-        Optional<Absence> existingAbsence = absenceRepository.findById(id);
-        if (existingAbsence.isPresent()) {
-            Absence absence = existingAbsence.get();
-            absence.setIsDeleted(1); // Set the isDeleted flag to 1 (true) for soft delete
-            absence.setUpdatedAt(LocalDateTime.now());
-            absenceRepository.save(absence);
-        }
+    public void delete(Long id) {
+        absenceRepository.deleteById(id);
     }
+
     @Override
     public List<Absence> getAbsencesByUser(String keycloakUserId) {
         return absenceRepository.findByKeycloakUserId(keycloakUserId);
