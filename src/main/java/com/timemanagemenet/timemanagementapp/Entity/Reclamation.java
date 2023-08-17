@@ -1,0 +1,61 @@
+package com.timemanagemenet.timemanagementapp.Entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@AllArgsConstructor
+@Table(name="RECLAMATION")
+@NoArgsConstructor
+@SQLDelete(sql = "UPDATE  ABSENCE SET is_deleted = 1 where id_reclamation=?")
+@Where(clause = "is_deleted=0")
+@Entity
+@Data
+
+public class Reclamation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_reclamation", nullable = false)
+    private Long idReclamation;
+
+    @Column(name = "reclamation_type")
+    private String reclamationType;
+
+    @Column(name = "reclamation_description")
+    private String reclamationDescription;
+
+    @Column(name = "reclamation_date")
+    private String reclamationDate;
+
+    @Column(name = "reclamation_status")
+    private String reclamationStatus;
+
+    @Column(name = "keycloak_user_id")
+    private String keycloakUserId;
+
+    @Column(name = "is_deleted")
+    private Integer isDeleted;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    // @OneToOne relation with absence
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_absence", referencedColumnName = "id_absence")
+    private Absence absence;
+
+}
