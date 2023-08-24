@@ -1,22 +1,23 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Table(name = "schedule")
 @SQLDelete(sql = "UPDATE  schedule SET is_deleted = 1 where scheduleId =?")
 @Where(clause = "is_deleted=0")
@@ -41,6 +42,7 @@ public class Schedule implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
     @JsonIgnoreProperties(value ="schedule" , allowSetters = true)
+    @ToString.Exclude
     private List<Planning> plannings = new ArrayList<>();
 
     @Column(name = "is_deleted")
@@ -58,4 +60,16 @@ public class Schedule implements Serializable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Schedule schedule = (Schedule) o;
+        return getScheduleId() != null && Objects.equals(getScheduleId(), schedule.getScheduleId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

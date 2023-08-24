@@ -1,25 +1,23 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Table(name = "planning")
 @SQLDelete(sql = "UPDATE  planning SET is_deleted = 1 where planning_Id=?")
 @Where(clause = "is_deleted=0")
@@ -30,13 +28,29 @@ public class Planning implements Serializable {
     @Column(name= "planning_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long planningId;
+
+    @Column(name = "planning_name")
     private String planningName;
+
+    @Column(name = "planning_desc")
     private String planningDesc;
+
+    @Column(name ="show_planning")
     private Boolean showPlanning;
+
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
     private Date endDate;
+
+    @Column(name = "color")
     private String color;
+
+    @Column(name = "color_icon")
     private String colorIcon;
+
+    @Column(name = "repeat_cycle")
     private int repeatCycle;
     @ElementCollection
     @CollectionTable(name = "planning_schedule_days", joinColumns = @JoinColumn(name = "planning_id"))
@@ -47,6 +61,7 @@ public class Planning implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "planning_id")
     @JsonIgnoreProperties(value ="planning" , allowSetters = true)
+    @ToString.Exclude
     private List<PlanningConfig> planningConfigs = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -70,5 +85,16 @@ public class Planning implements Serializable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Planning planning = (Planning) o;
+        return getPlanningId() != null && Objects.equals(getPlanningId(), planning.getPlanningId());
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

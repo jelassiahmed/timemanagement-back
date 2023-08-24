@@ -1,7 +1,7 @@
 package com.timemanagemenet.timemanagementapp.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Table(name="ABSENCE")
@@ -16,7 +17,10 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE  ABSENCE SET is_deleted = 1 where id_absence=?")
 @Where(clause = "is_deleted=0")
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Absence  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +51,16 @@ public class Absence  implements Serializable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Absence absence = (Absence) o;
+        return getIdAbsence() != null && Objects.equals(getIdAbsence(), absence.getIdAbsence());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

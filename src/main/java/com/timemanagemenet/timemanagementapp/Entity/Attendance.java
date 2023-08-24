@@ -1,15 +1,15 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.persistence.*;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Table(name="ATTENDANCE")
@@ -17,7 +17,10 @@ import javax.persistence.*;
 @Where(clause = "is_deleted=0")
 @NoArgsConstructor
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Attendance implements Serializable {
     @Id
     @Column(name= "attendance_id")
@@ -52,5 +55,16 @@ public class Attendance implements Serializable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Attendance that = (Attendance) o;
+        return getIdAttendance() != null && Objects.equals(getIdAttendance(), that.getIdAttendance());
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
