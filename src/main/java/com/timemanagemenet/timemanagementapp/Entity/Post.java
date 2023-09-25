@@ -20,7 +20,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class Post implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

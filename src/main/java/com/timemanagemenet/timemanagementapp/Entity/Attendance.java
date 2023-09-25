@@ -20,7 +20,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class Attendance implements Serializable {
     @Id
     @Column(name= "attendance_id")

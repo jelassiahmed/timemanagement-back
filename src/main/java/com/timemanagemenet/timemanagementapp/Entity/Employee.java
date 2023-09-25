@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -19,7 +20,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,6 +28,28 @@ public class Employee implements Serializable {
 
     @Column(name = "keycloak_user_id", nullable = false)
     private String keycloakUserId;
+
+    @Column(name = "total_leave", nullable = false)
+    private Integer totalLeave;
+
+    @Column(name = "used_leave", nullable = false)
+    private Integer usedLeave;
+
+    @Column(name = "is_deleted")
+    private Integer isDeleted;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
 
     @Override
     public boolean equals(Object o) {

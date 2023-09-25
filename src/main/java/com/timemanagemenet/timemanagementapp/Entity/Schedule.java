@@ -17,7 +17,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Table(name = "schedule")
 @SQLDelete(sql = "UPDATE  schedule SET is_deleted = 1 where scheduleId =?")
 @Where(clause = "is_deleted=0")

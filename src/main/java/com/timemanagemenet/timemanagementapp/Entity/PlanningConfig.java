@@ -17,7 +17,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Table(name = "planning_config")
 @SQLDelete(sql = "UPDATE  planning_config SET is_deleted planning_config_id= 1 where=?")
 @Where(clause = "is_deleted=0")

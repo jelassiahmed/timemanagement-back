@@ -23,7 +23,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class Conjoint {
     @EmbeddedId
     private ConjointId idConjoint;

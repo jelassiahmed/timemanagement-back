@@ -99,6 +99,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.camunda.bpm</groupId>
+			<artifactId>camunda-engine</artifactId>
+			<version>7.17.0</version> <!-- Use the latest version -->
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

@@ -23,7 +23,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class Enfant implements Serializable{
     @EmbeddedId
     private EnfantId id;
