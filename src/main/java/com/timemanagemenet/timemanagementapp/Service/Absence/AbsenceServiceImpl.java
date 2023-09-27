@@ -57,8 +57,7 @@ public class AbsenceServiceImpl implements AbsenceService {
         if (existingAbsence.isPresent()) {
             Absence absence = existingAbsence.get();
             absence.setUpdatedAt(LocalDateTime.now());
-            if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal) {
-                KeycloakPrincipal<?> keycloakPrincipal = (KeycloakPrincipal<?>) authentication.getPrincipal();
+            if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
                 String updatedBy = keycloakPrincipal.getName();
                 absence.setUpdatedBy(updatedBy);
             }
