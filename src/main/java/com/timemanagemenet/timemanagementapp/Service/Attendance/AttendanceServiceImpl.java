@@ -1,7 +1,9 @@
 package com.timemanagemenet.timemanagementapp.Service.Attendance;
 
 import com.timemanagemenet.timemanagementapp.Entity.Attendance;
+import com.timemanagemenet.timemanagementapp.Entity.BaseEntity;
 import com.timemanagemenet.timemanagementapp.Repository.AttendanceRepository;
+import com.timemanagemenet.timemanagementapp.Service.BaseService;
 import javassist.NotFoundException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,30 +39,16 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     public Attendance createAttendance(Attendance attendance) {
-        attendance.setCreatedAt(LocalDateTime.now());
-        attendance.setUpdatedAt(LocalDateTime.now());
-        attendance.setIsDeleted(0);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof org.keycloak.KeycloakPrincipal<?> keycloakPrincipal) {
-            String createdBy = keycloakPrincipal.getName();
-            attendance.setCreatedBy(createdBy);
-            attendance.setUpdatedBy(createdBy);
-        }
+        BaseService.initializeEntity(attendance);
 
         return attendanceRepository.save(attendance);
     }
     @Override
     public Attendance updateAttendance(Long attendanceId, Attendance updatedAttendance) throws NotFoundException {
         Optional<Attendance> existingAttendance = attendanceRepository.findById(attendanceId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (existingAttendance.isPresent()) {
             Attendance attendance = existingAttendance.get();
-            attendance.setUpdatedAt(LocalDateTime.now());
-            if(authentication != null && authentication.getPrincipal() instanceof org.keycloak.KeycloakPrincipal<?> keycloakPrincipal) {
-                String updatedBy = keycloakPrincipal.getName();
-                attendance.setUpdatedBy(updatedBy);
-            }
+            BaseService.updateEntity(attendance, updatedAttendance);
             attendance.setAttendanceType(updatedAttendance.getAttendanceType());
             attendance.setInputType(updatedAttendance.getInputType());
             attendance.setAttendanceTime(updatedAttendance.getAttendanceTime());

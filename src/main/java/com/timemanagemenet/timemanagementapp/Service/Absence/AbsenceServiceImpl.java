@@ -2,6 +2,7 @@ package com.timemanagemenet.timemanagementapp.Service.Absence;
 
 import com.timemanagemenet.timemanagementapp.Entity.Absence;
 import com.timemanagemenet.timemanagementapp.Repository.AbsenceRepository;
+import com.timemanagemenet.timemanagementapp.Service.BaseService;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -36,31 +37,17 @@ public class AbsenceServiceImpl implements AbsenceService {
     @Override
     public Absence create(Absence absence) {
 
-        absence.setCreatedAt(LocalDateTime.now());
-        absence.setUpdatedAt(LocalDateTime.now());
-        absence.setIsDeleted(0);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal) {
-            KeycloakPrincipal<?> keycloakPrincipal = (KeycloakPrincipal<?>) authentication.getPrincipal();
-            String createdBy = keycloakPrincipal.getName();
-            absence.setCreatedBy(createdBy);
-            absence.setUpdatedBy(createdBy);
-        }
+        BaseService.initializeEntity(absence);
         return absenceRepository.save(absence);
     }
 
     @Override
     public Absence update(Long id, Absence updatedAbsence) {
         Optional<Absence> existingAbsence = absenceRepository.findById(id);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (existingAbsence.isPresent()) {
             Absence absence = existingAbsence.get();
-            absence.setUpdatedAt(LocalDateTime.now());
-            if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
-                String updatedBy = keycloakPrincipal.getName();
-                absence.setUpdatedBy(updatedBy);
-            }
+            BaseService.updateEntity(absence, updatedAbsence);
             updatedAbsence.setIdAbsence(id);
             return absenceRepository.save(updatedAbsence);
         }
