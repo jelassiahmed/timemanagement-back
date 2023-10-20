@@ -20,7 +20,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class Attendance implements Serializable {
+public class Attendance extends BaseEntity implements Serializable {
     @Id
     @Column(name= "attendance_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,20 +39,6 @@ public class Attendance implements Serializable {
     @Column(name = "keycloak_user_id")
     private String keycloakUserId;
 
-    @Column(name = "is_deleted")
-    private Integer isDeleted;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @Column(name = "updated_by")
-    private String updatedBy;
 
     @Override
     public boolean equals(Object o) {
