@@ -49,4 +49,18 @@ public class Departement implements Serializable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "planning_planning_id")
+    private Planning planning;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_departement_id")
+    private Departement parentDepartement;
+
+    @OneToMany(mappedBy = "parentDepartement")
+    private List<Departement> childDepartements;
+
+
+
+
 }

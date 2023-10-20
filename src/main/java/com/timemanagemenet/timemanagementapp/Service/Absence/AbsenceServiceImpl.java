@@ -40,8 +40,7 @@ public class AbsenceServiceImpl implements AbsenceService {
         absence.setUpdatedAt(LocalDateTime.now());
         absence.setIsDeleted(0);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal) {
-            KeycloakPrincipal<?> keycloakPrincipal = (KeycloakPrincipal<?>) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
             String createdBy = keycloakPrincipal.getName();
             absence.setCreatedBy(createdBy);
             absence.setUpdatedBy(createdBy);

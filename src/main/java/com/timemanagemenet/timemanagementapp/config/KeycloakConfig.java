@@ -28,15 +28,14 @@ public class KeycloakConfig {
     @Bean
     public Keycloak keycloak() {
         return KeycloakBuilder.builder()
-                .serverUrl(keycloakProperties.getAuthServerUrl())
-                .realm(keycloakProperties.getRealm())
-                .clientId(keycloakProperties.getResource())
-                .clientSecret(getClientSecret())
-                .username(keycloakProperties.getPrincipalAttribute())
-                .password(keycloakProperties.getCredentials().get("secret").toString()) // Use 'secret' instead of 'password'
+                .serverUrl("http://localhost:8180")
+                .realm("TimeManagement")
+                .clientId("timemanagement-back")
+                .clientSecret("**********")
+                .username("admin_user")
+                .password("admin")
                 .build();
     }
-
 
     private String getClientSecret() {
         Map<String, Object> credentials = keycloakProperties.getCredentials();

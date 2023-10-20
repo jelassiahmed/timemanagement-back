@@ -42,6 +42,16 @@ public class EnfantServiceImpl implements EnfantService {
     }
 
     @Override
+    public Enfant getEnfantByFatherId(Long fatherId) {
+        return enfantRepository.findById_FatherId(fatherId);
+    }
+
+    @Override
+    public List<Enfant> getEnfantByConjointId(Integer conjointId) {
+        return enfantRepository.findById_ConjointId(conjointId);
+    }
+
+    @Override
     public void deleteEnfant(EnfantId id) {
         enfantRepository.deleteById(id);
     }

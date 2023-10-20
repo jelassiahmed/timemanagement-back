@@ -10,4 +10,8 @@ public interface EnfantService {
     Enfant getEnfantById(EnfantId id);
     void saveEnfant(Enfant enfant);
     void deleteEnfant(EnfantId id);
+
+    Enfant getEnfantByFatherId(Long fatherId);
+
+    List<Enfant> getEnfantByConjointId(Integer conjointId);
 }

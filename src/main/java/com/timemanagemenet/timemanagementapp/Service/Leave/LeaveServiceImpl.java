@@ -1,5 +1,6 @@
 package com.timemanagemenet.timemanagementapp.Service.Leave;
 
+import com.timemanagemenet.timemanagementapp.Entity.Employee;
 import com.timemanagemenet.timemanagementapp.Entity.Leave;
 import com.timemanagemenet.timemanagementapp.Repository.LeaveRepository;
 import org.keycloak.KeycloakPrincipal;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,49 +21,66 @@ public class LeaveServiceImpl implements LeaveService {
     private LeaveRepository leaveRepository;
 
     @Override
-    public List<Leave> getAllLeaves() {
-        return leaveRepository.findAll();
-    }
+    public void requestLeave(Employee employee, Leave leave) {
 
-    @Override
-    public Optional<Leave> getLeaveById(Long id) {
-        return leaveRepository.findById(id);
-    }
+        long numberOfDaysRequested = ChronoUnit.DAYS.between(leave.getStartDate(), leave.getEndDate());
 
-    @Override
-    public Leave createLeave(Leave leave) {
+
+        if (numberOfDaysRequested > (employee.getTotalLeave() - employee.getUsedLeave())) {
+            // Exceeded available leave, mark leave as deleted (refused)
+            leave.setIsDeleted(1);
+            leave.setStatus(-1);
+        } else {
+            // Sufficient leave, mark leave as pending
+            leave.setStatus(0);
+            leave.setIsDeleted(0);
+        }
+
+        //calculate return date
+        leave.setBackDate(leave.getEndDate().plusDays(1));
+        //calculate number of days requested
+        leave.setNumberOfDays((int) numberOfDaysRequested);
+
         leave.setCreatedAt(LocalDateTime.now());
         leave.setUpdatedAt(LocalDateTime.now());
-        leave.setIsDeleted(0);
+        leave.setKeycloakUserId(employee.getUserName());
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
             String createdBy = keycloakPrincipal.getName();
             leave.setCreatedBy(createdBy);
             leave.setUpdatedBy(createdBy);
         }
-        return leaveRepository.save(leave);
+
+        // Save the leave
+        leaveRepository.save(leave);
     }
 
     @Override
-    public Leave updateLeave(Long id, Leave leave) {
-        Optional<Leave> existingLeave = leaveRepository.findById(id);
+    public void approveLeave(Leave leave) {
+        leave.setStatus(1); // Set status to approved
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (existingLeave.isPresent()) {
-            leave.setIdLeave(id);
-            leave.setUpdatedAt(LocalDateTime.now());
-            if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
-                String updatedBy = keycloakPrincipal.getName();
-                leave.setUpdatedBy(updatedBy);
-            }
-            return leaveRepository.save(leave);
-        } else {
-            throw new IllegalArgumentException("Leave with id " + id + " not found");
+        if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
+            String updatedBy = keycloakPrincipal.getName();
+            leave.setUpdatedBy(updatedBy);
         }
+        leaveRepository.save(leave);
     }
 
     @Override
-    public void deleteLeave(Long id) {
-        leaveRepository.deleteById(id);
+    public void rejectLeave(Leave leave) {
+        leave.setStatus(-1); // Set status to rejected
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
+            String updatedBy = keycloakPrincipal.getName();
+            leave.setUpdatedBy(updatedBy);
+        }
+        leaveRepository.save(leave);
+    }
+
+    @Override
+    public Optional<Leave> findById(Long id) {
+        return leaveRepository.findById(id);
     }
 }
 

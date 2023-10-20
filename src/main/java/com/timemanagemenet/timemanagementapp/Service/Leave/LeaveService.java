@@ -1,14 +1,16 @@
 package com.timemanagemenet.timemanagementapp.Service.Leave;
 
+import com.timemanagemenet.timemanagementapp.Entity.Employee;
 import com.timemanagemenet.timemanagementapp.Entity.Leave;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface LeaveService {
-    List<Leave> getAllLeaves();
-    Optional<Leave> getLeaveById(Long id);
-    Leave createLeave(Leave leave);
-    Leave updateLeave(Long id, Leave leave);
-    void deleteLeave(Long id);
+    void requestLeave(Employee employee, Leave leave);
+    void approveLeave(Leave leave);
+    void rejectLeave(Leave leave);
+
+    Optional<Leave> findById(Long id);
+
 }

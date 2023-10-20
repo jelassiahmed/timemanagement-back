@@ -51,6 +51,10 @@ public class Diplome implements Serializable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @ToString.Exclude
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "employee_id_employee")
+    private Employee employee;
 
     @Override
     public boolean equals(Object o) {

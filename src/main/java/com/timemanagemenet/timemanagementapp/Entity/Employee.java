@@ -26,8 +26,22 @@ public class Employee implements Serializable {
     @Column(name = "id_employee", nullable = false)
     private Long idEmployee;
 
-    @Column(name = "keycloak_user_id", nullable = false)
-    private String keycloakUserId;
+
+    @Column(name = "firstName", nullable = false)
+    private String firstName;
+
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "username", nullable = false)
+    private String userName;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
 
     @Column(name = "total_leave", nullable = false)
     private Integer totalLeave;
@@ -50,6 +64,10 @@ public class Employee implements Serializable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @ToString.Exclude
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "post_id_post")
+    private Post post;
 
     @Override
     public boolean equals(Object o) {

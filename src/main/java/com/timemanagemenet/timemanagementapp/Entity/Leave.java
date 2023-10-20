@@ -7,6 +7,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -29,13 +30,13 @@ public class Leave implements Serializable {
     private String leaveType;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(name = "back_date", nullable = false)
-    private LocalDateTime backDate;
+    private LocalDate backDate;
 
     @Column(name = "number_of_days", nullable = false)
     private Integer numberOfDays;
@@ -60,6 +61,9 @@ public class Leave implements Serializable {
 
     @Column(name = "updated_by")
     private String updatedBy;
+
+    @Column(name = "status")
+    private Integer status;
 
     @Override
     public boolean equals(Object o) {
