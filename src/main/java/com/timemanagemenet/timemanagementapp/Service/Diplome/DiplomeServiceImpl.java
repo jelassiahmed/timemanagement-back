@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,5 +57,10 @@ public class DiplomeServiceImpl implements DiplomeService {
     @Override
     public void deleteDiplome(Long id) {
         diplomeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Diplome> getDiplomeByUserId(Long id) {
+        return diplomeRepository.findByEmployee_IdEmployee(id);
     }
 }

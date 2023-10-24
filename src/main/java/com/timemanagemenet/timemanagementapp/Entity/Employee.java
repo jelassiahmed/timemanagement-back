@@ -42,6 +42,8 @@ public class Employee implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "mobile" )
+    private String mobile;
 
     @Column(name = "total_leave", nullable = false)
     private Integer totalLeave;

@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/absences")
@@ -52,7 +53,13 @@ public class AbsenceController {private final AbsenceService absenceService;
 
     @GetMapping("/user")
     public List<Absence> getUserAbsences(@AuthenticationPrincipal KeycloakPrincipal<?> principal) {
-        String keycloakUserId = principal.getName();
-        return absenceService.getAbsencesByUser(keycloakUserId);
+        Set<String> roles = principal.getKeycloakSecurityContext().getToken().getRealmAccess().getRoles();
+
+        if (roles.contains("ROLE_ADMIN")) {
+            return absenceService.getAll();
+        } else {
+            String keycloakUserId = principal.getName();
+            return absenceService.getAbsencesByUser(keycloakUserId);
+        }
     }
 }

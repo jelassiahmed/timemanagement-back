@@ -26,7 +26,7 @@ public class Attendance extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAttendance;
 
-    //chekin checkout
+    //checkin checkout
     private String attendanceType ;
 
     //card finger password
