@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/enfants")
+@RequestMapping("/api/enfants")
 public class EnfantController {
 
     @Autowired
@@ -33,5 +33,10 @@ public class EnfantController {
     @DeleteMapping("/{id}")
     public void deleteEnfant(@PathVariable EnfantId id) {
         enfantService.deleteEnfant(id);
+    }
+
+    @GetMapping("/employee/{employeeId}")
+    public List<Enfant> getEnfantsByEmployeeId(@PathVariable Long employeeId) {
+        return  enfantService.getEnfantByFatherId(employeeId);
     }
 }

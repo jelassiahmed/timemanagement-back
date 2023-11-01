@@ -13,6 +13,7 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Consumer;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -92,9 +94,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         existingEmployee.setUpdatedAt(LocalDateTime.now());
 
+        updateFieldIfNotNull(existingEmployee::setFirstName, employee.getFirstName());
+        updateFieldIfNotNull(existingEmployee::setLastName, employee.getLastName());
+        updateFieldIfNotNull(existingEmployee::setEmail, employee.getEmail());
+        updateFieldIfNotNull(existingEmployee::setUserName, employee.getUserName());
+        updateFieldIfNotNull(existingEmployee::setPassword, employee.getPassword());
+        updateFieldIfNotNull(existingEmployee::setMobile, employee.getMobile());
+        updateFieldIfNotNull(existingEmployee::setTotalLeave, employee.getTotalLeave());
+        updateFieldIfNotNull(existingEmployee::setUsedLeave, employee.getUsedLeave());
+
         employeeRepository.save(existingEmployee);
 
 
+    }
+
+    private <T> void updateFieldIfNotNull(Consumer<T> setter, T value) {
+        if (value != null) {
+            setter.accept(value);
+        }
     }
 
     public void deleteEmployee(String userId){

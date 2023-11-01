@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/conjoints")
+@RequestMapping("/api/conjoints")
 public class ConjointController {
 
     @Autowired
@@ -32,5 +34,10 @@ public class ConjointController {
     public ResponseEntity<String> deleteConjointById(@PathVariable Long employeeId, @PathVariable Integer conjointId) {
         conjointService.deleteConjointById(employeeId, conjointId);
         return ResponseEntity.ok("Conjoint deleted successfully");
+    }
+
+    @GetMapping("/employee/{employeeId}")
+    public List<Conjoint> getConjointsByEmployeeId(@PathVariable Long employeeId) {
+        return conjointService.getConjointsByEmployeeId(employeeId);
     }
 }

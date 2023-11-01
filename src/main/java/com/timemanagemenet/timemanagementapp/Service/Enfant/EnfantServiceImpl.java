@@ -42,7 +42,7 @@ public class EnfantServiceImpl implements EnfantService {
     }
 
     @Override
-    public Enfant getEnfantByFatherId(Long fatherId) {
+    public List<Enfant> getEnfantByFatherId(Long fatherId) {
         return enfantRepository.findById_FatherId(fatherId);
     }
 

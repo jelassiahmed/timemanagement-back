@@ -1,7 +1,9 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -10,6 +12,8 @@ import java.util.Objects;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class ConjointId implements Serializable {
 
     private Long employeeId;

@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ConjointServiceImpl implements ConjointService {
@@ -41,5 +42,10 @@ public class ConjointServiceImpl implements ConjointService {
             conjoint.setIsDeleted(1);
             conjointRepository.save(conjoint);
         }
+    }
+
+    @Override
+    public List<Conjoint> getConjointsByEmployeeId(Long employeeId) {
+        return conjointRepository.findByIdConjoint_EmployeeId(employeeId);
     }
 }

@@ -1,8 +1,6 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Embeddable;
@@ -12,6 +10,8 @@ import java.util.Objects;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class EnfantId implements Serializable {
 
     private Long fatherId;

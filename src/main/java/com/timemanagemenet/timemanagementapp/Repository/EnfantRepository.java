@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface EnfantRepository extends JpaRepository<Enfant, EnfantId> {
-    Enfant findById_FatherId(Long fatherId);
+    List<Enfant> findById_FatherId(Long fatherId);
     List<Enfant> findById_ConjointId(Integer conjointId);
 
 }
