@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/api/employees")
 public class EmployeeController {
 
     @Autowired
@@ -17,13 +17,12 @@ public class EmployeeController {
     @PostMapping
     public String addUser(@RequestBody Employee userDTO){
         service.addEmployee(userDTO);
-        System.out.println(userDTO.getUserName() + userDTO.getPassword() + userDTO.getFirstName() + userDTO.getLastName() + userDTO.getEmail());
         return "User Added Successfully.";
     }
 
     @GetMapping(path = "/{userName}")
-    public List<UserRepresentation> getUser(@PathVariable("userName") String userName){
-        return service.getEmployee(userName);
+    public Employee getUser(@PathVariable("userName") String userName){
+        return service.findEmployeeByUserName(userName);
     }
 
     @PutMapping(path = "/update/{userId}")

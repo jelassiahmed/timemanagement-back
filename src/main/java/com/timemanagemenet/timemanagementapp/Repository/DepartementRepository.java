@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface DepartementRepository extends JpaRepository<Departement, Long> {
-    List<Departement> findBykeycloakUserIdIn(List<String> userIds);
 }

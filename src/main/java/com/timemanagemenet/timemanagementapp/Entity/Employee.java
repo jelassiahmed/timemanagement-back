@@ -1,6 +1,7 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
@@ -70,6 +71,11 @@ public class Employee implements Serializable {
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "post_id_post")
     private Post post;
+
+    @ToString.Exclude
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "departement_departement_id")
+    private Departement departement;
 
     @Override
     public boolean equals(Object o) {

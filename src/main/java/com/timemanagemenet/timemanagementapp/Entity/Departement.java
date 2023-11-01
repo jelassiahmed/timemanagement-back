@@ -29,11 +29,6 @@ public class Departement implements Serializable {
     @Column(name = "departement_manager_id")
     private String departementManagerId;
 
-    @ElementCollection
-    @CollectionTable(name = "departement_user_ids", joinColumns = @JoinColumn(name = "departement_id"))
-    @Column(name = "keycloak_user_id")
-    private List<String> keycloakUserId;
-
     @Column(name = "is_deleted")
     private Integer isDeleted;
 

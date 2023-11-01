@@ -14,4 +14,5 @@ public interface DepartementService {
     Departement updateDepartement(Long departementId, Departement updatedDepartement);
 
     void deleteDepartement(Long departementId);
+
 }

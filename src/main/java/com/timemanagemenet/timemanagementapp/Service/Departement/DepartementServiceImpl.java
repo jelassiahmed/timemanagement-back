@@ -65,4 +65,5 @@ public class DepartementServiceImpl implements DepartementService {
     public void deleteDepartement(Long departementId) {
         departementRepository.deleteById(departementId);
     }
+
 }

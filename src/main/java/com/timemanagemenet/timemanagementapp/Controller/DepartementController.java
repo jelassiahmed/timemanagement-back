@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/api/departments")
 public class DepartementController {
     private final DepartementService departementService;
 
@@ -63,4 +63,5 @@ public class DepartementController {
         departementService.deleteDepartement(departementId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

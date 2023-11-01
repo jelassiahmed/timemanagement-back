@@ -79,10 +79,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public void updateEmployee(String userId, Employee employee){
-        UserRepresentation user = convertEmployeeToUser(employee);
+        Employee existingEmployee = employeeRepository.findByUserName(userId);
+        if (existingEmployee == null) {
+            return;
+        }
 
-        UsersResource usersResource = getInstance();
-        usersResource.get(userId).update(user);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof org.keycloak.KeycloakPrincipal<?> keycloakPrincipal) {
+            String updatedBy = keycloakPrincipal.getName();
+            existingEmployee.setUpdatedBy(updatedBy);
+        }
+
+        existingEmployee.setUpdatedAt(LocalDateTime.now());
+
+        employeeRepository.save(existingEmployee);
+
+
     }
 
     public void deleteEmployee(String userId){
