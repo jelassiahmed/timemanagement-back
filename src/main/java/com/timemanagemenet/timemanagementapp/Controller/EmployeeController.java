@@ -1,12 +1,12 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Employee;
+import com.timemanagemenet.timemanagementapp.Entity.ResetPasswordRequest;
 import com.timemanagemenet.timemanagementapp.Service.Employee.EmployeeService;
-import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -43,9 +43,13 @@ public class EmployeeController {
         return "Verification Link Send to Registered E-mail Id.";
     }
 
-    @GetMapping(path = "/reset-password/{userId}")
-    public String sendResetPassword(@PathVariable("userId") String userId){
-        service.sendResetPassword(userId);
-        return "Reset Password Link Send Successfully to Registered E-mail Id.";
+    @PutMapping("/{userId}/reset-password")
+    public ResponseEntity<String> resetPassword(@PathVariable String userId, @RequestBody ResetPasswordRequest request) {
+        try {
+            service.resetPassword(userId, request.getRawPassword());
+            return ResponseEntity.ok("Password reset successful.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error resetting password: " + e.getMessage());
+        }
     }
 }

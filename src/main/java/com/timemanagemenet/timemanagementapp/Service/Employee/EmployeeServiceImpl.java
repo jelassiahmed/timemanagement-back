@@ -4,32 +4,23 @@ import com.timemanagemenet.timemanagementapp.Entity.Credentials;
 import com.timemanagemenet.timemanagementapp.Entity.Employee;
 import com.timemanagemenet.timemanagementapp.Repository.EmployeeRepository;
 import com.timemanagemenet.timemanagementapp.config.KeycloakConfig;
-import org.camunda.bpm.model.xml.ModelBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
+import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-
-    // Assuming you have a method to convert Employee to UserRepresentation
 
     @Autowired
     private KeycloakConfig keycloakConfig;
@@ -132,4 +123,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     public UsersResource getInstance(){
         return keycloakConfig.keycloak().realm("TimeManagement").users();
     }
+
+    public void resetPassword(String userId, String newPassword) {
+        try {
+            RealmResource realmResource = keycloakConfig.keycloak().realm("TimeManagement"); // Ensure the realm name matches
+            UsersResource usersResource = realmResource.users();
+            UserResource userResource = usersResource.get(userId);
+
+            CredentialRepresentation credential = new CredentialRepresentation();
+            credential.setTemporary(false);
+            credential.setType(CredentialRepresentation.PASSWORD);
+            credential.setValue(newPassword);
+
+            userResource.resetPassword(credential);
+        } catch (Exception e) {
+            throw new RuntimeException("Error resetting password: " + e.getMessage(), e);
+        }
+    }
+
 }

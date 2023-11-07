@@ -22,4 +22,6 @@ public interface EmployeeService {
     void sendResetPassword(String userId);
 
     UsersResource getInstance();
+
+    void resetPassword(String userId, String rawPassword);
 }

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/leaves")
+@RequestMapping("/api/leaves")
 public class LeaveController {
 
     @Autowired
