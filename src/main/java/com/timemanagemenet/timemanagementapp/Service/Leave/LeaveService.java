@@ -13,4 +13,6 @@ public interface LeaveService {
 
     Optional<Leave> findById(Long id);
 
+    public List<Leave> getLeavesByUserId(String userId);
+
 }

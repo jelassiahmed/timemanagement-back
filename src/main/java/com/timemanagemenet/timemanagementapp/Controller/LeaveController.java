@@ -79,4 +79,9 @@ public class LeaveController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Leave request not found.");
         }
     }
+
+    @GetMapping("/{userId}")
+    public List<Leave> getLeavesByUserId(@PathVariable String userId) {
+        return leaveService.getLeavesByUserId(userId);
+    }
 }

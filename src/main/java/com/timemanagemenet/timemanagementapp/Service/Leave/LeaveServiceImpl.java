@@ -28,7 +28,7 @@ public class LeaveServiceImpl implements LeaveService {
 
         if (numberOfDaysRequested > (employee.getTotalLeave() - employee.getUsedLeave())) {
             // Exceeded available leave, mark leave as deleted (refused)
-            leave.setIsDeleted(1);
+            leave.setIsDeleted(0);
             leave.setStatus(-1);
         } else {
             // Sufficient leave, mark leave as pending
@@ -81,6 +81,11 @@ public class LeaveServiceImpl implements LeaveService {
     @Override
     public Optional<Leave> findById(Long id) {
         return leaveRepository.findById(id);
+    }
+
+    @Override
+    public List<Leave> getLeavesByUserId(String userId) {
+        return leaveRepository.findByKeycloakUserId(userId);
     }
 }
 
