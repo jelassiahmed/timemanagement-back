@@ -15,4 +15,7 @@ public interface LeaveService {
 
     public List<Leave> getLeavesByUserId(String userId);
 
+    List<Leave> getAllLeaves();
+
+
 }

@@ -84,4 +84,9 @@ public class LeaveController {
     public List<Leave> getLeavesByUserId(@PathVariable String userId) {
         return leaveService.getLeavesByUserId(userId);
     }
+
+    @GetMapping
+    public List<Leave> getAllLeaves() {
+        return leaveService.getAllLeaves();
+    }
 }

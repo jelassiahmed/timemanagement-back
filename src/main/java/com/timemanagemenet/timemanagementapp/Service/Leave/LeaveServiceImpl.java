@@ -2,6 +2,7 @@ package com.timemanagemenet.timemanagementapp.Service.Leave;
 
 import com.timemanagemenet.timemanagementapp.Entity.Employee;
 import com.timemanagemenet.timemanagementapp.Entity.Leave;
+import com.timemanagemenet.timemanagementapp.Repository.EmployeeRepository;
 import com.timemanagemenet.timemanagementapp.Repository.LeaveRepository;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class LeaveServiceImpl implements LeaveService {
 
     @Autowired
     private LeaveRepository leaveRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Override
     public void requestLeave(Employee employee, Leave leave) {
@@ -58,11 +62,21 @@ public class LeaveServiceImpl implements LeaveService {
 
     @Override
     public void approveLeave(Leave leave) {
-        leave.setStatus(1); // Set status to approved
+        leave.setStatus(1);
+
+        String employee = leave.getKeycloakUserId();
+
+        Employee employee1 = employeeRepository.findByUserName(employee);
+        employee1.setUsedLeave(employee1.getUsedLeave() + leave.getNumberOfDays());
+
+        leave.setUpdatedAt(LocalDateTime.now());
+        leaveRepository.save(leave);
+        employeeRepository.save(employee1);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
             String updatedBy = keycloakPrincipal.getName();
             leave.setUpdatedBy(updatedBy);
+            leave.setUpdatedAt(LocalDateTime.now());
         }
         leaveRepository.save(leave);
     }
@@ -74,6 +88,7 @@ public class LeaveServiceImpl implements LeaveService {
         if (authentication != null && authentication.getPrincipal() instanceof KeycloakPrincipal<?> keycloakPrincipal) {
             String updatedBy = keycloakPrincipal.getName();
             leave.setUpdatedBy(updatedBy);
+            leave.setUpdatedAt(LocalDateTime.now());
         }
         leaveRepository.save(leave);
     }
@@ -86,6 +101,11 @@ public class LeaveServiceImpl implements LeaveService {
     @Override
     public List<Leave> getLeavesByUserId(String userId) {
         return leaveRepository.findByKeycloakUserId(userId);
+    }
+
+    @Override
+    public List<Leave> getAllLeaves() {
+        return leaveRepository.findAll();
     }
 }
 
