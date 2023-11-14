@@ -24,4 +24,6 @@ public interface EmployeeService {
     UsersResource getInstance();
 
     void resetPassword(String userId, String rawPassword);
+
+    List<Employee> getAllEmployees();
 }

@@ -1,5 +1,8 @@
 package com.timemanagemenet.timemanagementapp.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,9 +53,11 @@ public class Departement implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "parent_departement_id")
+    @JsonBackReference
     private Departement parentDepartement;
 
     @OneToMany(mappedBy = "parentDepartement")
+    @JsonManagedReference
     private List<Departement> childDepartements;
 
 

@@ -1,14 +1,19 @@
 package com.timemanagemenet.timemanagementapp.Service.Departement;
 import com.timemanagemenet.timemanagementapp.Entity.Departement;
 import com.timemanagemenet.timemanagementapp.Repository.DepartementRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.beans.PropertyDescriptor;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class DepartementServiceImpl implements DepartementService {
@@ -46,20 +51,34 @@ public class DepartementServiceImpl implements DepartementService {
 
     @Override
     public Departement updateDepartement(Long departementId, Departement updatedDepartement) {
-        Optional<Departement> existingDepartement = departementRepository.findById(departementId);
+        Optional<Departement> existingDepartementOptional = departementRepository.findById(departementId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (existingDepartement.isPresent()) {
-            updatedDepartement.setUpdatedAt(LocalDateTime.now());
+        if (existingDepartementOptional.isPresent()) {
+            Departement existingDepartement = existingDepartementOptional.get();
+            BeanUtils.copyProperties(updatedDepartement, existingDepartement, getNullPropertyNames(updatedDepartement));
+
+            existingDepartement.setUpdatedAt(LocalDateTime.now());
+
             if(authentication != null && authentication.getPrincipal() instanceof org.keycloak.KeycloakPrincipal<?> keycloakPrincipal) {
                 String updatedBy = keycloakPrincipal.getName();
-                updatedDepartement.setUpdatedBy(updatedBy);
+                existingDepartement.setUpdatedBy(updatedBy);
             }
-            updatedDepartement.setDepartementId(departementId);
-            return departementRepository.save(updatedDepartement);
+
+            return departementRepository.save(existingDepartement);
         }
-        return null; // Return appropriate response or throw exception if not found
+
+        return null; // Return appropriate response or throw an exception if not found
     }
+
+    private String[] getNullPropertyNames(Object source) {
+        final BeanWrapper wrappedSource = new BeanWrapperImpl(source);
+        return Stream.of(wrappedSource.getPropertyDescriptors())
+                .map(PropertyDescriptor::getName)
+                .filter(propertyName -> wrappedSource.getPropertyValue(propertyName) == null)
+                .toArray(String[]::new);
+    }
+
 
     @Override
     public void deleteDepartement(Long departementId) {
