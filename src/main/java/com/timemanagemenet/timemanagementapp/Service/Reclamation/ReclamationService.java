@@ -2,6 +2,7 @@ package com.timemanagemenet.timemanagementapp.Service.Reclamation;
 
 import com.timemanagemenet.timemanagementapp.Entity.Reclamation;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface ReclamationService {
@@ -16,5 +17,7 @@ public interface ReclamationService {
     void deleteReclamation(Long reclamationId);
 
     List<Reclamation> getAllReclamationsByUserId(String userId);
-    public void deleteOldReclamations();
+
+    @Transactional
+     void deleteOldReclamations();
 }

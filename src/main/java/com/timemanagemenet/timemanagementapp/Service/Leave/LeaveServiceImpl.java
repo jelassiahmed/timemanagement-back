@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -109,9 +110,10 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
+    @Transactional
     public void markRefusedLeavesAsDeleted() {
         LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
-        leaveRepository.markAsDeleted("Refused", threeDaysAgo);
+        leaveRepository.markAsDeleted(-1, threeDaysAgo);
     }
 }
 

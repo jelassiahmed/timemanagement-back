@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 @Component
 public class ScheduledTask {
 
@@ -19,6 +21,7 @@ public class ScheduledTask {
 
     // Run the task every  72 hours
     @Scheduled(fixedRate = 72 * 60 * 60 * 1000)
+    @Transactional
     public void deleteOldReclamations() {
         reclamationService.deleteOldReclamations();
     }
@@ -36,6 +39,8 @@ public class ScheduledTask {
     }
 
     @Scheduled(fixedRate = 72 * 60 * 60 * 1000)
+    @Transactional
+
     public void markRefusedLeavesAsDeleted() {
         leaveService.markRefusedLeavesAsDeleted();
     }

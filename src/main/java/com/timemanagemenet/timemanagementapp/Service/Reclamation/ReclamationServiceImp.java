@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -68,6 +69,9 @@ public class ReclamationServiceImp implements ReclamationService{
         return reclamationRepository.findByKeycloakUserId(userId);
     }
 
+
+    @Override
+    @Transactional
     public void deleteOldReclamations() {
         LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
         reclamationRepository.markAsDeleted("REFUSE", threeDaysAgo);
