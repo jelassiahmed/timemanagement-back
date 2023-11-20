@@ -59,35 +59,19 @@ public class ReclamationController {
             @PathVariable("id") Long id,
             @RequestBody Reclamation reclamation,
     @AuthenticationPrincipal KeycloakAuthenticationToken authenticationToken) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-        if (authenticationToken.getAccount().getKeycloakSecurityContext().getToken().getSubject().equals(reclamation.getKeycloakUserId())
-                || isAdmin) {
             Reclamation updatedReclamation = reclamationService.updateReclamation(id, reclamation);
             return ResponseEntity.ok(updatedReclamation);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReclamation(
             @PathVariable("id") Long id,
             @AuthenticationPrincipal KeycloakAuthenticationToken authenticationToken) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-Reclamation reclamation = reclamationService.getReclamationById(id);
-        if (authenticationToken.getAccount().getKeycloakSecurityContext().getToken().getSubject().equals(reclamation.getKeycloakUserId())
-                || isAdmin) {
             reclamationService.deleteReclamation(id);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+
+        return ResponseEntity.ok().build();
     }
 
 

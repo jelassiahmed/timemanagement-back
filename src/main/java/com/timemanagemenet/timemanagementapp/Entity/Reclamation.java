@@ -55,7 +55,7 @@ public class Reclamation {
     private String updatedBy;
 
     // @OneToOne relation with absence
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_absence", referencedColumnName = "id_absence")
     private Absence absence;
 

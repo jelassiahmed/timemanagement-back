@@ -33,6 +33,7 @@ public class ReclamationServiceImp implements ReclamationService{
         reclamation.setCreatedAt(LocalDateTime.now());
         reclamation.setUpdatedAt(LocalDateTime.now());
         reclamation.setIsDeleted(0);
+        reclamation.setReclamationStatus("PENDING");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof org.keycloak.KeycloakPrincipal<?> keycloakPrincipal) {
             String createdBy = keycloakPrincipal.getName();
@@ -56,7 +57,10 @@ public class ReclamationServiceImp implements ReclamationService{
     @Override
     public void deleteReclamation(Long reclamationId) {
         //delete
-        reclamationRepository.deleteById(reclamationId);
+        reclamationRepository.findById(reclamationId).ifPresent(reclamation -> {
+            reclamation.setIsDeleted(1);
+            reclamationRepository.save(reclamation);
+        });
     }
 
     @Override
