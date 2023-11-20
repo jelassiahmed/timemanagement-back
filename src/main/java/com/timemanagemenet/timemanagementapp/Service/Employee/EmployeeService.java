@@ -26,4 +26,5 @@ public interface EmployeeService {
     void resetPassword(String userId, String rawPassword);
 
     List<Employee> getAllEmployees();
+    public void updateTotalLeaveDays();
 }

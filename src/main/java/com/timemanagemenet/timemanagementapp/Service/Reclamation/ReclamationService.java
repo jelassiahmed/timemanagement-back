@@ -16,4 +16,5 @@ public interface ReclamationService {
     void deleteReclamation(Long reclamationId);
 
     List<Reclamation> getAllReclamationsByUserId(String userId);
+    public void deleteOldReclamations();
 }

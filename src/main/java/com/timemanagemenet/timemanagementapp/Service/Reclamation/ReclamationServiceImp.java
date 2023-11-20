@@ -67,4 +67,10 @@ public class ReclamationServiceImp implements ReclamationService{
     public List<Reclamation> getAllReclamationsByUserId(String userId) {
         return reclamationRepository.findByKeycloakUserId(userId);
     }
+
+    public void deleteOldReclamations() {
+        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
+        reclamationRepository.deleteByReclamationStatusAndUpdatedAtBefore("REFUSE", threeDaysAgo);
+        reclamationRepository.deleteByReclamationStatusAndUpdatedAtBefore("TRAITE", threeDaysAgo);
+    }
 }

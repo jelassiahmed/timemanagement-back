@@ -149,4 +149,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findAll();
     }
 
+    @Override
+    public void updateTotalLeaveDays() {
+        employeeRepository.updateTotalLeave(1.5);
+    }
+
 }
