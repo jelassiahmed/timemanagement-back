@@ -70,7 +70,7 @@ public class ReclamationServiceImp implements ReclamationService{
 
     public void deleteOldReclamations() {
         LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
-        reclamationRepository.deleteByReclamationStatusAndUpdatedAtBefore("REFUSE", threeDaysAgo);
-        reclamationRepository.deleteByReclamationStatusAndUpdatedAtBefore("TRAITE", threeDaysAgo);
+        reclamationRepository.markAsDeleted("REFUSE", threeDaysAgo);
+        reclamationRepository.markAsDeleted("TRAITE", threeDaysAgo);
     }
 }

@@ -107,6 +107,12 @@ public class LeaveServiceImpl implements LeaveService {
     public List<Leave> getAllLeaves() {
         return leaveRepository.findAll();
     }
+
+    @Override
+    public void markRefusedLeavesAsDeleted() {
+        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
+        leaveRepository.markAsDeleted("Refused", threeDaysAgo);
+    }
 }
 
 

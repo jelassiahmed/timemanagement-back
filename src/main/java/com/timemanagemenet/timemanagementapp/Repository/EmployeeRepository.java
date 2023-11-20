@@ -13,4 +13,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Modifying
     @Query("UPDATE Employee e SET e.totalLeave = e.totalLeave + :additionalLeave")
     void updateTotalLeave(double additionalLeave);
+
+    @Modifying
+    @Query("UPDATE Employee e SET e.usedLeave = 0")
+    void resetUsedLeave();
 }

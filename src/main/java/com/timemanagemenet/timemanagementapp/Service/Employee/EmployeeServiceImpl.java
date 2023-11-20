@@ -154,4 +154,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.updateTotalLeave(1.5);
     }
 
+    @Override
+    public void resetUsedLeaves() {
+        employeeRepository.resetUsedLeave();
+    }
+
 }
