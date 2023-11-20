@@ -39,12 +39,11 @@ public class ReclamationController {
     public ResponseEntity<List<Reclamation>> getReclamationsByUserId(
             @PathVariable("id") String id,
             @AuthenticationPrincipal KeycloakAuthenticationToken authenticationToken) {
-        if (authenticationToken.getAccount().getKeycloakSecurityContext().getToken().getSubject().equals(id)) {
+
             List<Reclamation> reclamations = reclamationService.getAllReclamationsByUserId(id);
             return ResponseEntity.ok(reclamations);
-        } else {
-            return ResponseEntity.badRequest().build();
-    }
+
+
 
     }
 
