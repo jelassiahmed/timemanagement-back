@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/absences")
+@RequestMapping("/api/absences")
 public class AbsenceController {private final AbsenceService absenceService;
 
     @Autowired

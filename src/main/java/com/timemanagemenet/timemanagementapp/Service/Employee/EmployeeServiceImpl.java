@@ -106,8 +106,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public void deleteEmployee(String userId){
+        Employee employee = employeeRepository.findByUserName(userId);
+        employee.setIsDeleted(1);
+        employeeRepository.save(employee);
         UsersResource usersResource = getInstance();
-        usersResource.get(userId).remove();
+        usersResource.searchByUsername(userId, true).forEach(user -> usersResource.delete(user.getId()));
     }
 
     public void sendVerificationLink(String userId){
