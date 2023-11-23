@@ -1,6 +1,7 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Departement;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Departement.DepartementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,12 @@ import java.util.List;
 @RequestMapping("/api/departments")
 public class DepartementController {
     private final DepartementService departementService;
+    final WebSocketController webSocketController;
 
     @Autowired
-    public DepartementController(DepartementService departementService) {
+    public DepartementController(DepartementService departementService, WebSocketController webSocketController) {
         this.departementService = departementService;
+        this.webSocketController = webSocketController;
     }
 
     @GetMapping
@@ -43,6 +46,7 @@ public class DepartementController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Departement> createDepartement(@RequestBody Departement departement) {
         Departement createdDepartement = departementService.createDepartement(departement);
+        webSocketController.sendMessage(new WebSocketMessage("added departement"+ createdDepartement.getDepartementId()));
         return new ResponseEntity<>(createdDepartement, HttpStatus.CREATED);
     }
 

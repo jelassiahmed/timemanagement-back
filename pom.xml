@@ -120,6 +120,18 @@
 			<artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
 			<version>${camunda.spring-boot.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>5.3.13</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>5.3.13</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

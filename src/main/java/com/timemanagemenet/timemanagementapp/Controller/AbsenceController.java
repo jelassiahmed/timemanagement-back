@@ -1,9 +1,12 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Absence;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Absence.AbsenceService;
+import com.timemanagemenet.timemanagementapp.config.WebSocket.Greeting;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +15,16 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/absences")
-public class AbsenceController {private final AbsenceService absenceService;
+public class AbsenceController {
 
+    private final AbsenceService absenceService;
+    final WebSocketController webSocketController;
     @Autowired
-    public AbsenceController(AbsenceService absenceService) {
+    public AbsenceController(AbsenceService absenceService,WebSocketController webSocketController) {
         this.absenceService = absenceService;
+        this.webSocketController = webSocketController;
     }
 
     @GetMapping("/{id}")
@@ -35,13 +42,19 @@ public class AbsenceController {private final AbsenceService absenceService;
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Absence createAbsence(@RequestBody Absence absence) {
-        return absenceService.create(absence);
+
+        Absence createdAbsence = absenceService.create(absence);
+        webSocketController.sendMessage(new WebSocketMessage("add absence"+ createdAbsence.getIdAbsence()));
+
+        return createdAbsence;
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Absence updateAbsence(@PathVariable Long id, @RequestBody Absence updatedAbsence) {
-        return absenceService.update(id, updatedAbsence);
+        Absence absence = absenceService.update(id, updatedAbsence);
+        webSocketController.sendMessage(new WebSocketMessage("update absence"+ absence.getIdAbsence()));
+        return absence;
     }
 
     @DeleteMapping("/{id}")
@@ -49,6 +62,7 @@ public class AbsenceController {private final AbsenceService absenceService;
     public void deleteAbsence(@PathVariable Long id) {
 
         absenceService.delete(id);
+        webSocketController.sendMessage(new WebSocketMessage("delete absence"));
     }
 
     @GetMapping("/user")
