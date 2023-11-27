@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @CrossOrigin("*")
-@RequestMapping("ws")
+@RequestMapping("/ws")
 public class WebSocketController {
 
     @Autowired

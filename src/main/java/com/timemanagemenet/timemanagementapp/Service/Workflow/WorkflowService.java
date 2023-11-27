@@ -35,8 +35,8 @@ public class WorkflowService {
         );
         if (task.isPresent() && validateur1 != null) {
           task.map(t -> {
-                t.setAssignee(validateur1.toString());
-                taskService.setAssignee(t.getId(), validateur1.toString());
+                t.setAssignee(validateur1);
+                taskService.setAssignee(t.getId(), validateur1);
                 return t;
             });
         }
