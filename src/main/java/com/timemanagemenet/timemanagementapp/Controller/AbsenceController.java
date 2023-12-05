@@ -1,8 +1,11 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Absence;
+import com.timemanagemenet.timemanagementapp.Entity.Employee;
+import com.timemanagemenet.timemanagementapp.Entity.Notification;
 import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Absence.AbsenceService;
+import com.timemanagemenet.timemanagementapp.Service.Employee.EmployeeService;
 import com.timemanagemenet.timemanagementapp.config.WebSocket.Greeting;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,12 @@ public class AbsenceController {
 
     private final AbsenceService absenceService;
     final WebSocketController webSocketController;
+    private final EmployeeService employeeService;
     @Autowired
-    public AbsenceController(AbsenceService absenceService,WebSocketController webSocketController) {
+    public AbsenceController(AbsenceService absenceService,WebSocketController webSocketController, EmployeeService employeeService) {
         this.absenceService = absenceService;
         this.webSocketController = webSocketController;
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/{id}")
@@ -43,8 +48,12 @@ public class AbsenceController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Absence createAbsence(@RequestBody Absence absence) {
 
+        Notification notif = new Notification();
+        notif.setMessage("New absence created");
+        Employee employee = employeeService.findEmployeeByUserName(absence.getKeycloakUserId());
         Absence createdAbsence = absenceService.create(absence);
         webSocketController.sendMessage(new WebSocketMessage("add absence"+ createdAbsence.getIdAbsence()));
+        webSocketController.sendNotification(employee.getIdEmployee(), notif);
 
         return createdAbsence;
     }

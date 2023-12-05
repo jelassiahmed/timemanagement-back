@@ -60,12 +60,10 @@ public class WorkflowService {
     }
 
 
-    public void completeTask(String taskId, String decision){
-       Map varibles= new HashMap<>();
-
-       varibles.put("decision",decision);
-        taskService.complete(taskId,varibles);
-
+    public void completeTask(String taskId, String decision) {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("decision", decision);
+        taskService.complete(taskId, variables);
     }
 
 
