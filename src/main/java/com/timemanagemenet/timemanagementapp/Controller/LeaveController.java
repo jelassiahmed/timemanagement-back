@@ -2,9 +2,13 @@ package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Employee;
 import com.timemanagemenet.timemanagementapp.Entity.Leave;
+import com.timemanagemenet.timemanagementapp.Entity.dto.Notification;
 import com.timemanagemenet.timemanagementapp.Service.Employee.EmployeeService;
 import com.timemanagemenet.timemanagementapp.Service.Leave.LeaveService;
+import com.timemanagemenet.timemanagementapp.Service.Workflow.WorkflowService;
+import org.camunda.bpm.engine.task.Task;
 import org.keycloak.KeycloakPrincipal;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +27,12 @@ public class LeaveController {
     private LeaveService leaveService;
 
     @Autowired
+    private WorkflowService workflowService;
+
+    @Autowired
     private EmployeeService employeeService;
 
+    private final Logger logger = org.slf4j.LoggerFactory.getLogger(LeaveController.class);
     @PostMapping("/request")
     public ResponseEntity<String> requestLeave(@RequestBody Leave leaveRequestDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -52,6 +60,14 @@ public class LeaveController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
         }
+    }
+
+    @GetMapping("/check-process-id")
+    public void checkProcessId(String name){
+
+       String procId= workflowService.getProcessId(name);
+
+        logger.info("process id is "+procId);
     }
 
     @PostMapping("/approve/{id}")
@@ -89,4 +105,9 @@ public class LeaveController {
     public List<Leave> getAllLeaves() {
         return leaveService.getAllLeaves();
     }
+
+    @GetMapping("/tasks") List<Notification> getNotifs(){
+        return workflowService.loadNotification("admin_user");
+    }
+
 }

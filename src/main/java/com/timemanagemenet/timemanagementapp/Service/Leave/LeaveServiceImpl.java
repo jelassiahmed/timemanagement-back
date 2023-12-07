@@ -4,6 +4,9 @@ import com.timemanagemenet.timemanagementapp.Entity.Employee;
 import com.timemanagemenet.timemanagementapp.Entity.Leave;
 import com.timemanagemenet.timemanagementapp.Repository.EmployeeRepository;
 import com.timemanagemenet.timemanagementapp.Repository.LeaveRepository;
+import com.timemanagemenet.timemanagementapp.Service.Workflow.WorkflowService;
+import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.task.Task;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,6 +27,13 @@ public class LeaveServiceImpl implements LeaveService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private WorkflowService workflowService;
+
+    @Autowired
+    private TaskService taskService;
+
 
     @Override
     public void requestLeave(Employee employee, Leave leave) {
@@ -59,6 +69,9 @@ public class LeaveServiceImpl implements LeaveService {
 
         // Save the leave
         leaveRepository.save(leave);
+
+        // call workflowService.startProcessInstance(leave);
+        workflowService.startProcessByInstId(leave, employee.getDepartement().getDepartementManagerId());
     }
 
     @Override
@@ -79,7 +92,7 @@ public class LeaveServiceImpl implements LeaveService {
             leave.setUpdatedBy(updatedBy);
             leave.setUpdatedAt(LocalDateTime.now());
         }
-        leaveRepository.save(leave);
+        
     }
 
     @Override
