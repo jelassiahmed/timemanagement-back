@@ -131,11 +131,10 @@ return null;
 
     public void completeTask(String taskId, String decision) {
         Map<String, Object> variables = new HashMap<>();
-
-     //   Task task=taskService.createTaskQuery().taskId(taskId).singleResult();
-
+        System.out.println("Decision Variable Value: " + decision);
 
         variables.put("decision", decision);
+        System.out.println("variables Variable Value: " + variables);
         taskService.complete(taskId, variables);
     }
 

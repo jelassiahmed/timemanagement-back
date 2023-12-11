@@ -17,10 +17,10 @@
       <bpmn:outgoing>Flow_1j5qyjn</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0y4n49n" sourceRef="Gateway_0uvtz82" targetRef="Activity_1ofec0z">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${'decision'=='rejet'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision=='rejet'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_04rc75y" sourceRef="Gateway_0uvtz82" targetRef="Activity_08cj7ro">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${'decision'=='accept'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision=='accept'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:exclusiveGateway id="Gateway_0avuzl9">
       <bpmn:incoming>Flow_1oo0j30</bpmn:incoming>
@@ -33,10 +33,10 @@
       <bpmn:outgoing>Flow_1oo0j30</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1gi8tal" sourceRef="Gateway_0avuzl9" targetRef="Activity_0gkpbzx">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${'decision'=='rejet'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision=='rejet'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1w7543v" sourceRef="Gateway_0avuzl9" targetRef="Activity_0zw2asu">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${'decision'=='accept'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision=='accept'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:intermediateThrowEvent id="Event_0jx923d">
       <bpmn:incoming>Flow_1eq0hv6</bpmn:incoming>

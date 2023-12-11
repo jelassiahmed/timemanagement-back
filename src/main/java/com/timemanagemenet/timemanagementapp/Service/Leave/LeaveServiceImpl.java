@@ -92,7 +92,7 @@ public class LeaveServiceImpl implements LeaveService {
             leave.setUpdatedBy(updatedBy);
             leave.setUpdatedAt(LocalDateTime.now());
         }
-        
+
     }
 
     @Override

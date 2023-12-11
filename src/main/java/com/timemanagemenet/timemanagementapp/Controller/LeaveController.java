@@ -6,7 +6,6 @@ import com.timemanagemenet.timemanagementapp.Entity.dto.Notification;
 import com.timemanagemenet.timemanagementapp.Service.Employee.EmployeeService;
 import com.timemanagemenet.timemanagementapp.Service.Leave.LeaveService;
 import com.timemanagemenet.timemanagementapp.Service.Workflow.WorkflowService;
-import org.camunda.bpm.engine.task.Task;
 import org.keycloak.KeycloakPrincipal;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,5 +108,7 @@ public class LeaveController {
     @GetMapping("/tasks") List<Notification> getNotifs(){
         return workflowService.loadNotification("admin_user");
     }
-
+    @PostMapping ("/tasks/{taskId}") public void completeTask(@PathVariable String taskId){
+        workflowService.completeTask(taskId, "accept");
+    }
 }
