@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LeaveService {
-    void requestLeave(Employee employee, Leave leave);
+    Leave requestLeave(Employee employee, Leave leave);
     void approveLeave(Leave leave);
     void rejectLeave(Leave leave);
 

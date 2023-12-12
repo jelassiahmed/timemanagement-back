@@ -1,7 +1,9 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
+import com.timemanagemenet.timemanagementapp.Entity.Absence;
 import com.timemanagemenet.timemanagementapp.Entity.Employee;
 import com.timemanagemenet.timemanagementapp.Entity.Leave;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Entity.dto.Notification;
 import com.timemanagemenet.timemanagementapp.Service.Employee.EmployeeService;
 import com.timemanagemenet.timemanagementapp.Service.Leave.LeaveService;
@@ -30,6 +32,8 @@ public class LeaveController {
 
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private WebSocketController webSocketController;
 
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(LeaveController.class);
     @PostMapping("/request")
@@ -49,8 +53,8 @@ public class LeaveController {
                 leave.setStartDate(leaveRequestDTO.getStartDate());
                 leave.setEndDate(leaveRequestDTO.getEndDate());
                 leave.setInterimUser(leaveRequestDTO.getInterimUser());
-
-                leaveService.requestLeave(employee, leave);
+               Leave createdLeave =  leaveService.requestLeave(employee, leave);
+                webSocketController.sendMessage(new WebSocketMessage("New leave request",  createdLeave.getIdLeave()));
 
                 return ResponseEntity.ok("Leave request submitted successfully.");
             } else {
@@ -76,19 +80,22 @@ public class LeaveController {
         if (leaveOptional.isPresent()) {
             Leave leave = leaveOptional.get();
             leaveService.approveLeave(leave);
+            webSocketController.sendMessage(new WebSocketMessage("Leave request approved",  leave.getIdLeave()));
             return ResponseEntity.ok("Leave request approved successfully.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Leave request not found.");
         }
     }
 
-    @PostMapping("/reject/{id}")
-    public ResponseEntity<String> rejectLeave(@PathVariable Long id) {
+    @PostMapping("/reject/{id}/{taskId}")
+    public ResponseEntity<String> rejectLeave(@PathVariable Long id, @PathVariable String taskId) {
         Optional<Leave> leaveOptional = leaveService.findById(id);
 
         if (leaveOptional.isPresent()) {
             Leave leave = leaveOptional.get();
+            workflowService.completeTask(taskId, "rejet");
             leaveService.rejectLeave(leave);
+            webSocketController.sendMessage(new WebSocketMessage("Leave request rejected",  leave.getIdLeave()));
             return ResponseEntity.ok("Leave request rejected successfully.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Leave request not found.");

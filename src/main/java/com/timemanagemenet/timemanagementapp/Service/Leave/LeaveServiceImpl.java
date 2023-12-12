@@ -6,7 +6,6 @@ import com.timemanagemenet.timemanagementapp.Repository.EmployeeRepository;
 import com.timemanagemenet.timemanagementapp.Repository.LeaveRepository;
 import com.timemanagemenet.timemanagementapp.Service.Workflow.WorkflowService;
 import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.task.Task;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -36,7 +35,7 @@ public class LeaveServiceImpl implements LeaveService {
 
 
     @Override
-    public void requestLeave(Employee employee, Leave leave) {
+    public Leave requestLeave(Employee employee, Leave leave) {
 
         long numberOfDaysRequested = ChronoUnit.DAYS.between(leave.getStartDate(), leave.getEndDate());
 
@@ -71,7 +70,9 @@ public class LeaveServiceImpl implements LeaveService {
         leaveRepository.save(leave);
 
         // call workflowService.startProcessInstance(leave);
-        workflowService.startProcessByInstId(leave, employee.getDepartement().getDepartementManagerId());
+        if(leave.getStatus() == 0)
+        {workflowService.startProcessByInstId(leave, employee.getDepartement().getDepartementManagerId());}
+        return leave;
     }
 
     @Override

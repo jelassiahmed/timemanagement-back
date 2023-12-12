@@ -28,7 +28,7 @@
       <bpmn:outgoing>Flow_1w7543v</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1oo0j30" sourceRef="Activity_08cj7ro" targetRef="Gateway_0avuzl9" />
-    <bpmn:userTask id="Activity_08cj7ro" name="avis RH" camunda:candidateUsers="ROLE_RH">
+    <bpmn:userTask id="Activity_08cj7ro" name="avis RH" camunda:assignee="admin_user" camunda:candidateUsers="ROLE_RH">
       <bpmn:incoming>Flow_04rc75y</bpmn:incoming>
       <bpmn:outgoing>Flow_1oo0j30</bpmn:outgoing>
     </bpmn:userTask>
