@@ -2,6 +2,7 @@ package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Employee;
 import com.timemanagemenet.timemanagementapp.Entity.ResetPasswordRequest;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,13 @@ public class EmployeeController {
 
     @Autowired
     EmployeeService service;
+
+    @Autowired
+    WebSocketController webSocketController;
     @PostMapping
     public String addUser(@RequestBody Employee userDTO){
-        service.addEmployee(userDTO);
+        Employee employee = service.addEmployee(userDTO);
+        webSocketController.sendMessage(new WebSocketMessage("add employee"+ employee.getIdEmployee()));
         return "User Added Successfully.";
     }
 
@@ -30,12 +35,14 @@ public class EmployeeController {
     @PutMapping(path = "/update/{userId}")
     public String updateUser(@PathVariable("userId") String userId,   @RequestBody Employee userDTO){
         service.updateEmployee(userId, userDTO);
+        webSocketController.sendMessage(new WebSocketMessage("update employee"+ userId));
         return "User Details Updated Successfully.";
     }
 
     @DeleteMapping(path = "/{userId}")
     public String deleteUser(@PathVariable("userId") String userId){
         service.deleteEmployee(userId);
+        webSocketController.sendMessage(new WebSocketMessage("delete employee"+ userId));
         return "User Deleted Successfully.";
     }
 

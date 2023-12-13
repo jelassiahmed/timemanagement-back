@@ -1,6 +1,7 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Schedule;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Schedule.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,12 @@ import java.util.List;
 @RequestMapping("/schedules")
 public class ScheduleController {
     private final ScheduleService scheduleService;
+    private final WebSocketController webSocketController;
 
     @Autowired
-    public ScheduleController(ScheduleService scheduleService) {
+    public ScheduleController(ScheduleService scheduleService, WebSocketController webSocketController) {
         this.scheduleService = scheduleService;
+        this.webSocketController = webSocketController;
     }
 
     @GetMapping
@@ -68,6 +71,7 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Schedule createdSchedule = scheduleService.createSchedule(schedule);
+        webSocketController.sendMessage(new WebSocketMessage("newSchedule", createdSchedule.getScheduleId()));
         return new ResponseEntity<>(createdSchedule, HttpStatus.CREATED);
     }
 
@@ -84,6 +88,7 @@ public class ScheduleController {
         }
         Schedule updatedSchedule = scheduleService.updateSchedule(scheduleId, schedule);
         if (updatedSchedule != null) {
+            webSocketController.sendMessage(new WebSocketMessage("updateSchedule", updatedSchedule.getScheduleId()));
             return new ResponseEntity<>(updatedSchedule, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -102,6 +107,7 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         scheduleService.deleteSchedule(scheduleId);
+        webSocketController.sendMessage(new WebSocketMessage("deleteSchedule", scheduleId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

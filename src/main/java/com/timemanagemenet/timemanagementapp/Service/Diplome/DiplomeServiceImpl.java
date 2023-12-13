@@ -23,7 +23,7 @@ public class DiplomeServiceImpl implements DiplomeService {
     }
 
     @Override
-    public void saveDiplome(Diplome diplome) {
+    public Diplome saveDiplome(Diplome diplome) {
         diplome.setCreatedAt(LocalDateTime.now());
         diplome.setUpdatedAt(LocalDateTime.now());
         diplome.setIsDeleted(0);
@@ -34,10 +34,11 @@ public class DiplomeServiceImpl implements DiplomeService {
             diplome.setUpdatedBy(createdBy);
         }
         diplomeRepository.save(diplome);
+        return diplome;
     }
 
     @Override
-    public void updateDiplome(Long id, Diplome updatedDiplome) {
+    public Diplome updateDiplome(Long id, Diplome updatedDiplome) {
         Optional<Diplome> existingDiplome = diplomeRepository.findById(id);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -52,6 +53,7 @@ public class DiplomeServiceImpl implements DiplomeService {
             updatedDiplome.setIdDiplome(id);
             diplomeRepository.save(updatedDiplome);
         }
+        return updatedDiplome;
     }
 
     @Override

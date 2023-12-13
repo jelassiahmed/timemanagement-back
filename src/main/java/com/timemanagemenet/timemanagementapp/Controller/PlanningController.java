@@ -1,6 +1,7 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Planning;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Planning.PlanningService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -16,9 +17,11 @@ import java.util.List;
 @RequestMapping("/api/plannings")
 public class PlanningController {
     private final PlanningService planningService;
+    private final WebSocketController webSocketController;
 
-    public PlanningController(PlanningService planningService) {
+    public PlanningController(PlanningService planningService, WebSocketController webSocketController) {
         this.planningService = planningService;
+        this.webSocketController = webSocketController;
     }
 
     @PostMapping
@@ -33,6 +36,7 @@ public class PlanningController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Planning createdPlanning = planningService.savePlanning(planning);
+        webSocketController.sendMessage(new WebSocketMessage(" new planning created", createdPlanning.getPlanningId()));
         return ResponseEntity.ok(createdPlanning);
     }
 
@@ -52,6 +56,7 @@ public class PlanningController {
             return ResponseEntity.notFound().build();
         }
         Planning updatedPlanning = planningService.updatePlanning(planning);
+        webSocketController.sendMessage(new WebSocketMessage(" planning updated", updatedPlanning.getPlanningId()));
         return ResponseEntity.ok(updatedPlanning);
     }
 
@@ -71,6 +76,7 @@ public class PlanningController {
             return ResponseEntity.notFound().build();
         }
         planningService.deletePlanning(planningId);
+        webSocketController.sendMessage(new WebSocketMessage(" planning deleted", planningId));
         return ResponseEntity.noContent().build();
     }
 

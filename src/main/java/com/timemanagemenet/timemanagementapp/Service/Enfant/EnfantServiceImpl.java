@@ -28,7 +28,7 @@ public class EnfantServiceImpl implements EnfantService {
     }
 
     @Override
-    public void saveEnfant(Enfant enfant) {
+    public Enfant saveEnfant(Enfant enfant) {
         enfant.setCreatedAt(LocalDateTime.now());
         enfant.setUpdatedAt(LocalDateTime.now());
         enfant.setIsDeleted(0);
@@ -39,6 +39,7 @@ public class EnfantServiceImpl implements EnfantService {
             enfant.setUpdatedBy(createdBy);
         }
         enfantRepository.save(enfant);
+        return enfant;
     }
 
     @Override

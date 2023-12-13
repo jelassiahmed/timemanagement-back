@@ -8,7 +8,7 @@ import java.util.List;
 public interface EnfantService {
     List<Enfant> getAllEnfants();
     Enfant getEnfantById(EnfantId id);
-    void saveEnfant(Enfant enfant);
+    Enfant saveEnfant(Enfant enfant);
     void deleteEnfant(EnfantId id);
 
     List<Enfant> getEnfantByFatherId(Long fatherId);

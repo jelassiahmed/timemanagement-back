@@ -1,13 +1,12 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Reclamation;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Reclamation.ReclamationService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +15,11 @@ import java.util.List;
 @RequestMapping("/api/reclamation")
 public class ReclamationController {
     private final ReclamationService reclamationService;
+    private final WebSocketController webSocketController;
 
-    public ReclamationController(ReclamationService reclamationService) {
+    public ReclamationController(ReclamationService reclamationService, WebSocketController webSocketController) {
         this.reclamationService = reclamationService;
+        this.webSocketController = webSocketController;
     }
 
     @GetMapping
@@ -50,6 +51,7 @@ public class ReclamationController {
     @PostMapping
     public ResponseEntity<Reclamation> createReclamation(@RequestBody Reclamation reclamation) {
         Reclamation createdReclamation = reclamationService.createReclamation(reclamation);
+        webSocketController.sendMessage(new WebSocketMessage("add reclamation"+ createdReclamation.getIdReclamation()));
         return ResponseEntity.ok(createdReclamation);
     }
 
@@ -59,6 +61,7 @@ public class ReclamationController {
             @RequestBody Reclamation reclamation,
     @AuthenticationPrincipal KeycloakAuthenticationToken authenticationToken) {
             Reclamation updatedReclamation = reclamationService.updateReclamation(id, reclamation);
+            webSocketController.sendMessage(new WebSocketMessage("update reclamation"+ updatedReclamation.getIdReclamation()));
             return ResponseEntity.ok(updatedReclamation);
 
     }
@@ -69,6 +72,7 @@ public class ReclamationController {
             @AuthenticationPrincipal KeycloakAuthenticationToken authenticationToken) {
 
             reclamationService.deleteReclamation(id);
+            webSocketController.sendMessage(new WebSocketMessage("delete reclamation"+ id));
 
         return ResponseEntity.ok().build();
     }

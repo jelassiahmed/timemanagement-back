@@ -7,7 +7,6 @@ import com.timemanagemenet.timemanagementapp.config.KeycloakConfig;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
-import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -48,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findByUserName(userName);
     }
 
-    public void addEmployee(Employee employee){
+    public Employee addEmployee(Employee employee){
         UserRepresentation user = convertEmployeeToUser(employee);
 
         UsersResource instance = getInstance();
@@ -64,6 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         employeeRepository.save(employee);
         System.out.println(user.getUsername() + employee.getPassword() + employee.getFirstName() + employee.getLastName() + employee.getEmail());
+        return employee;
     }
 
     public List<UserRepresentation> getEmployee(String userName){

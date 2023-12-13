@@ -9,7 +9,7 @@ import java.util.List;
 public interface EmployeeService {
 
     Employee findEmployeeByUserName(String userName);
-    void addEmployee(Employee employee);
+    Employee addEmployee(Employee employee);
 
     List<UserRepresentation> getEmployee(String userName);
 

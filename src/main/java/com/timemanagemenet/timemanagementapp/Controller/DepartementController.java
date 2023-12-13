@@ -55,6 +55,7 @@ public class DepartementController {
     public ResponseEntity<Departement> updateDepartement(@PathVariable Long departementId, @RequestBody Departement updatedDepartement) {
         Departement updated = departementService.updateDepartement(departementId, updatedDepartement);
         if (updated != null) {
+            webSocketController.sendMessage(new WebSocketMessage("updated departement"+ updated.getDepartementId()));
             return new ResponseEntity<>(updated, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,6 +66,7 @@ public class DepartementController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteDepartement(@PathVariable Long departementId) {
         departementService.deleteDepartement(departementId);
+        webSocketController.sendMessage(new WebSocketMessage("deleted departement"+ departementId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

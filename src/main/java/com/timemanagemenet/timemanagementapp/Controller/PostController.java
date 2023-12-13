@@ -1,6 +1,7 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Post;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,9 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private WebSocketController webSocketController;
+
     @GetMapping
     public List<Post> getAllPosts() {
         return postService.getAllPosts();
@@ -26,16 +30,21 @@ public class PostController {
 
     @PostMapping
     public Post createPost(@RequestBody Post post) {
-        return postService.createPost(post);
+      Post  newPost = postService.createPost(post);
+        webSocketController.sendMessage(new WebSocketMessage("add post"+ newPost.getIdPost()));
+        return newPost;
     }
 
     @PutMapping("/{id}")
     public Post updatePost(@PathVariable Long id, @RequestBody Post post) {
-        return postService.updatePost(id, post);
+       Post updated = postService.updatePost(id, post);
+        webSocketController.sendMessage(new WebSocketMessage("update post"+ updated.getIdPost()));
+        return updated;
     }
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
         postService.deletePost(id);
+        webSocketController.sendMessage(new WebSocketMessage("delete post"+ id));
     }
 }

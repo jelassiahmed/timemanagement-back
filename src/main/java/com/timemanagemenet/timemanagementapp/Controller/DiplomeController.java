@@ -1,6 +1,7 @@
 package com.timemanagemenet.timemanagementapp.Controller;
 
 import com.timemanagemenet.timemanagementapp.Entity.Diplome;
+import com.timemanagemenet.timemanagementapp.Entity.WebSocketMessage;
 import com.timemanagemenet.timemanagementapp.Service.Diplome.DiplomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,9 @@ public class DiplomeController {
     @Autowired
     private DiplomeService diplomeService;
 
+    @Autowired
+    private WebSocketController webSocketController;
+
     @GetMapping("/{id}")
     public Diplome getDiplomeById(@PathVariable Long id) {
         return diplomeService.getDiplomeById(id);
@@ -21,17 +25,22 @@ public class DiplomeController {
 
     @PostMapping
     public void saveDiplome(@RequestBody Diplome diplome) {
-        diplomeService.saveDiplome(diplome);
+
+       Diplome newDip = diplomeService.saveDiplome(diplome);
+         webSocketController.sendMessage(new WebSocketMessage("add diplome"+ newDip.getIdDiplome()));
     }
 
     @PutMapping("/{id}")
     public void updateDiplome(@PathVariable Long id, @RequestBody Diplome updatedDiplome) {
-        diplomeService.updateDiplome(id, updatedDiplome);
+      Diplome updatedDip =  diplomeService.updateDiplome(id, updatedDiplome);
+        webSocketController.sendMessage(new WebSocketMessage("update diplome"+ updatedDip.getIdDiplome()));
     }
 
     @DeleteMapping("/{id}")
     public void deleteDiplome(@PathVariable Long id) {
+
         diplomeService.deleteDiplome(id);
+        webSocketController.sendMessage(new WebSocketMessage("delete diplome"+ id));
     }
 
     @GetMapping("/user/{id}")
