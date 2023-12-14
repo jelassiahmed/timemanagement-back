@@ -8,4 +8,6 @@ public interface NotificationService {
     List<Notification> getNotificationsByEmployeeId(Long idEmployee);
     void createNotification(Long idEmployee, String message);
 
+    void markNotificationAsOpened(Long notificationId);
+
 }

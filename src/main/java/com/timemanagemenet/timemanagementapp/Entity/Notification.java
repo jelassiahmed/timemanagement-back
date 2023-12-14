@@ -24,4 +24,6 @@ public class Notification {
     private String message;
 
     private LocalDateTime timestamp;
+
+    private boolean opened = false;
 }

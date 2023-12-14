@@ -33,4 +33,13 @@ public class NotificationServiceImpl implements NotificationService {
         messagingTemplate.convertAndSendToUser(idEmployee.toString(), "/topic/notification", notification);
 
     }
+    @Override
+    public void markNotificationAsOpened(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
+
+        // Mark the notification as opened
+        notification.setOpened(true);
+        notificationRepository.save(notification);
+    }
 }
