@@ -5,11 +5,17 @@ public class WebSocketMessage {
     private String socketMessage;
     private long objectId;
 
+    private String taskId;
     public WebSocketMessage() {
     }
     public WebSocketMessage(String socketMessage, long id) {
         this.socketMessage = socketMessage;
         this.objectId = id;
+    }
+
+    public WebSocketMessage(String socketMessage, String taskId) {
+        this.socketMessage = socketMessage;
+        this.taskId = taskId;
     }
 
     public long getObjectId() {
@@ -20,7 +26,13 @@ public class WebSocketMessage {
         this.objectId = objectId;
     }
 
+    public String getTaskId() {
+        return taskId;
+    }
 
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
 
     public WebSocketMessage(String socketMessage) {
         this.socketMessage = socketMessage;

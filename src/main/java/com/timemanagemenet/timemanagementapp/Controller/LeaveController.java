@@ -117,5 +117,6 @@ public class LeaveController {
     }
     @PostMapping ("/tasks/{taskId}") public void completeTask(@PathVariable String taskId){
         workflowService.completeTask(taskId, "accept");
+        webSocketController.sendMessage(new WebSocketMessage("Leave request approved",  taskId));
     }
 }
