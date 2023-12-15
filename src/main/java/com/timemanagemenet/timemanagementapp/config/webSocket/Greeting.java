@@ -1,4 +1,4 @@
-package com.timemanagemenet.timemanagementapp.config.WebSocket;
+package com.timemanagemenet.timemanagementapp.config.webSocket;
 
 public class Greeting {
 

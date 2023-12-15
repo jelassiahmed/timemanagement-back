@@ -19,6 +19,8 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
     private final WebSocketController webSocketController;
 
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+
     @Autowired
     public ScheduleController(ScheduleService scheduleService, WebSocketController webSocketController) {
         this.scheduleService = scheduleService;
@@ -31,7 +33,7 @@ public class ScheduleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -46,7 +48,7 @@ public class ScheduleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -65,7 +67,7 @@ public class ScheduleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -81,7 +83,7 @@ public class ScheduleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -101,7 +103,7 @@ public class ScheduleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

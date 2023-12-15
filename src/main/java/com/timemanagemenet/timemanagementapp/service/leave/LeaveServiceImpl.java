@@ -69,7 +69,6 @@ public class LeaveServiceImpl implements LeaveService {
         // Save the leave
         leaveRepository.save(leave);
 
-        // call workflowService.startProcessInstance(leave);
         if(leave.getStatus() == 0)
         {workflowService.startProcessByInstId(leave, employee.getDepartement().getDepartementManagerId());}
         return leave;

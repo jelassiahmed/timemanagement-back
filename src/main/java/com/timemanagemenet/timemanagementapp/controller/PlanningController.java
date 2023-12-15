@@ -19,6 +19,8 @@ public class PlanningController {
     private final PlanningService planningService;
     private final WebSocketController webSocketController;
 
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+
     public PlanningController(PlanningService planningService, WebSocketController webSocketController) {
         this.planningService = planningService;
         this.webSocketController = webSocketController;
@@ -30,7 +32,7 @@ public class PlanningController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -46,7 +48,7 @@ public class PlanningController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -66,7 +68,7 @@ public class PlanningController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -86,7 +88,7 @@ public class PlanningController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -102,10 +104,6 @@ public class PlanningController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Planning>> getAllPlannings(Authentication authentication) {
         // Retrieve the authenticated user's details
-        KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) authentication;
-        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-        String userId = principal.getName();
-
         List<Planning> userPlannings = planningService.getAllPlannings();
         return ResponseEntity.ok(userPlannings);
     }

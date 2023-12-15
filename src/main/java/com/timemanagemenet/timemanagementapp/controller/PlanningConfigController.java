@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/planning-config")
 public class PlanningConfigController {
     private final PlanningConfigService planningConfigService;
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Autowired
     public PlanningConfigController(PlanningConfigService planningConfigService) {
@@ -28,7 +29,7 @@ public class PlanningConfigController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return null;
@@ -42,7 +43,7 @@ public class PlanningConfigController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return null;
@@ -56,7 +57,7 @@ public class PlanningConfigController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return null;
@@ -73,7 +74,7 @@ public class PlanningConfigController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return null;

@@ -64,14 +64,6 @@ public class LeaveController {
         }
     }
 
-    @GetMapping("/check-process-id")
-    public void checkProcessId(String name){
-
-       String procId= workflowService.getProcessId(name);
-
-        logger.info("process id is "+procId);
-    }
-
     @PostMapping("/approve/{id}")
     public ResponseEntity<String> approveLeave(@PathVariable Long id) {
         Optional<Leave> leaveOptional = leaveService.findById(id);

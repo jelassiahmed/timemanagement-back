@@ -2,7 +2,6 @@ package com.timemanagemenet.timemanagementapp.service.attendance;
 
 import com.timemanagemenet.timemanagementapp.entity.Attendance;
 import com.timemanagemenet.timemanagementapp.repository.AttendanceRepository;
-import com.timemanagemenet.timemanagementapp.service.BaseService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,8 +33,6 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     public Attendance createAttendance(Attendance attendance) {
-        BaseService.initializeEntity(attendance);
-
         return attendanceRepository.save(attendance);
     }
     @Override
@@ -43,7 +40,6 @@ public class AttendanceServiceImpl implements AttendanceService {
         Optional<Attendance> existingAttendance = attendanceRepository.findById(attendanceId);
         if (existingAttendance.isPresent()) {
             Attendance attendance = existingAttendance.get();
-            BaseService.updateEntity(attendance, updatedAttendance);
             attendance.setAttendanceType(updatedAttendance.getAttendanceType());
             attendance.setInputType(updatedAttendance.getInputType());
             attendance.setAttendanceTime(updatedAttendance.getAttendanceTime());

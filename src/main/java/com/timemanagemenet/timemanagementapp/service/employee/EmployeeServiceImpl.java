@@ -62,7 +62,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setUpdatedBy(createdBy);
         }
         employeeRepository.save(employee);
-        System.out.println(user.getUsername() + employee.getPassword() + employee.getFirstName() + employee.getLastName() + employee.getEmail());
         return employee;
     }
 

@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping("/attendance")
 public class AttendanceController {
     private final AttendanceService attendanceService;
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Autowired
     public AttendanceController(AttendanceService attendanceService) {
@@ -31,7 +32,7 @@ public class AttendanceController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -46,7 +47,7 @@ public class AttendanceController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority -> authority.getAuthority().equals(ROLE_ADMIN));
 
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
