@@ -19,7 +19,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class Attendance extends BaseEntity implements Serializable {
+public class Attendance implements Serializable {
     @Id
     @Column(name= "attendance_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
