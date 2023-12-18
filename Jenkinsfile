@@ -21,18 +21,6 @@ pipeline {
             }
         }
 
-        stage('Compile...'){
-            steps{
-                sh "mvn compile"
-            }
-        }
-
-        stage('MVN SONARQUBE'){
-            steps{
-                sh "mvn sonar:sonar -Dsonar.login=sqa_51a446c1c10f21425cebea77abed25fc0578094a"
-            }
-        }
-
         stage("Maven Build") {
                     steps {
                         script {
@@ -40,6 +28,13 @@ pipeline {
                         }
                     }
                 }
+
+        stage('MVN SONARQUBE'){
+            steps{
+                sh "mvn sonar:sonar -Dsonar.login=sqa_51a446c1c10f21425cebea77abed25fc0578094a"
+            }
+        }
+
 
         stage("Publish to Nexus Repository Manager") {
                     steps {
