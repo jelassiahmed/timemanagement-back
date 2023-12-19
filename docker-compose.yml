@@ -2,14 +2,16 @@ version: '3.8'
 
 services:
   oracle-db:
-    image: larmic/oracle-xe:18.4.0
+    image: oracle/database:18.4.0-xe
+    container_name: oracle-db-container
     ports:
       - "1521:1521"
     environment:
-      - ORACLE_PDB=ORCLPDB1
-      - ORACLE_PWD=oracle
+      - ORACLE_SID=XE
+        - ORACLE_PDB=XEPDB1
+        - ORACLE_PWD=admin
     volumes:
-      - ./oracle-scripts:/opt/oracle/scripts/setup
+      - oracle-data:/opt/oracle/oradata
     command: ["/bin/sh", "/opt/oracle/scripts/setup/setup.sh"]
 
   sonarqube:
@@ -78,3 +80,4 @@ volumes:
   SonarQube_logs:
   nexus_data:
   dbdata:
+  oracle-data:
