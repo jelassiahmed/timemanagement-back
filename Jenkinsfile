@@ -48,7 +48,7 @@ pipeline {
         stage('Deploy with docker-compose') {
                    steps {
                        script {
-                           sh "docker login container-registry.oracle.com"
+                           sh "docker login -u ahmedjelassi -p Langue123"
                            sh "docker-compose up -d"
                        }
                    }
