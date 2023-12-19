@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   oracle-db:
-    image: kyleaure/oracle-18.4.0-expanded
+    image: gvenzl/oracle-xe:18.4.0-slim
     container_name: oracle-db-container
     ports:
       - "1521:1521"
