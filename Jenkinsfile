@@ -45,6 +45,13 @@ pipeline {
                         sh "docker push ahmedjelassi/timemanagement-app"
                     }
                 }
+        stage('Deploy with docker-compose') {
+                   steps {
+                       script {
+                           sh "docker-compose up -d"
+                       }
+                   }
+               }
 
 
         stage("Publish to Nexus Repository Manager") {
