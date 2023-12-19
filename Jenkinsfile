@@ -36,14 +36,14 @@ pipeline {
         }
         stage('Building image'){
                     steps{
-                        sh "docker build -t ahmedjelassi/timemanagement-back ."
+                        sh "docker build -t ahmedjelassi/timemanagement-app ."
                     }
                 }
         stage('Pushing image'){
                     steps{
                         sh "docker login -u ahmedjelassi -p Langue123"
-                        sh "docker tag timemanagement-back ahmedjelassi/timemanagement-back:latest"
-                        sh "docker push ahmedjelassi/timemanagement-back:latest"
+                        sh "docker tag timemanagement-app ahmedjelassi/timemanagement-app:latest"
+                        sh "docker push ahmedjelassi/timemanagement-app:latest"
                     }
                 }
 
