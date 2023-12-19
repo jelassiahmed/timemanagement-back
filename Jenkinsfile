@@ -42,8 +42,7 @@ pipeline {
         stage('Pushing image'){
                     steps{
                         sh "docker login -u ahmedjelassi -p Langue123"
-                        sh "docker tag timemanagement-app ahmedjelassi/timemanagement-app:latest"
-                        sh "docker push ahmedjelassi/timemanagement-app:latest"
+                        sh "docker push ahmedjelassi/timemanagement-app"
                     }
                 }
 
