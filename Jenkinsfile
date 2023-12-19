@@ -49,7 +49,7 @@ pipeline {
                    steps {
                        script {
                            sh "docker login -u ahmedjelassi -p Langue123"
-                           sh "docker login container-registry.oracle.com"
+                           sh "docker login -it container-registry.oracle.com"
                            sh "docker-compose up -d"
                        }
                    }
