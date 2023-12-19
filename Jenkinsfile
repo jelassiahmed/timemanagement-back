@@ -34,6 +34,18 @@ pipeline {
                 sh "mvn sonar:sonar -Dsonar.login=sqa_51a446c1c10f21425cebea77abed25fc0578094a"
             }
         }
+        stage('Building image'){
+                    steps{
+                        sh "docker build -t ahmedjelassi/timemanagement-back ."
+                    }
+                }
+        stage('Pushing image'){
+                    steps{
+                        sh "docker login -u ahmedjelassi -p Langue123"
+                        sh "docker tag timemanagement-back jelassiahmed/timemanagement-back"
+                        sh "docker push ahmedjelassi/timemanagement-back"
+                    }
+                }
 
 
         stage("Publish to Nexus Repository Manager") {
