@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   oracle-db:
-    image: container-registry.oracle.com/database/enterprise:18.4.0-xe
+    image: larmic/oracle-xe:18.4.0
     ports:
       - "1521:1521"
     environment:
