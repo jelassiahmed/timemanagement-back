@@ -10,6 +10,7 @@ services:
         - ORACLE_SID=XE
         - ORACLE_PDB=XEPDB1
         - ORACLE_PWD=admin
+        - ORACLE_PASSWORD=admin
     volumes:
         - oracle-data:/opt/oracle/oradata
     command: [ "/bin/sh", "/opt/oracle/scripts/setup/setup.sh" ]
