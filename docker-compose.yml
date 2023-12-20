@@ -61,8 +61,8 @@ services:
       SPRING_APPLICATION_JSON:
         '{
           "spring.datasource.url": "jdbc:oracle:thin:@oracle-db:1521/XE",
-          "spring.datasource.username": "PFE_AHMED",
-          "spring.datasource.password": "PFE_AHMED",
+          "spring.datasource.username": "SYS",
+          "spring.datasource.password": "admin",
           "spring.datasource.driver-class-name": "oracle.jdbc.OracleDriver",
           "spring.jpa.hibernate.ddl-auto": "update",
           "keycloak.realm": "TimeManagement",
