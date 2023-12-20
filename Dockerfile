@@ -5,7 +5,7 @@ FROM openjdk:17-alpine
 EXPOSE 8888
 
 # Copy the JAR file into the container at /app
-COPY target/timemanagement-app-0.0.1-SNAPSHOT.jar /app/timemanagement-app.jar
+COPY target/timemanagement-app.jar /app/timemanagement-app.jar
 
 # Set the working directory to /app
 WORKDIR /app
