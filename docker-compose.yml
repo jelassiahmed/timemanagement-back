@@ -5,14 +5,14 @@ services:
     image: gvenzl/oracle-xe:18.4.0-slim
     container_name: oracle-db-container
     ports:
-      - "1521:1521"
+        - "1521:1521"
     environment:
-      - ORACLE_SID=XE
+        - ORACLE_SID=XE
         - ORACLE_PDB=XEPDB1
         - ORACLE_PWD=admin
     volumes:
-      - oracle-data:/opt/oracle/oradata
-    command: ["/bin/sh", "/opt/oracle/scripts/setup/setup.sh"]
+        - oracle-data:/opt/oracle/oradata
+    command: [ "/bin/sh", "/opt/oracle/scripts/setup/setup.sh" ]
 
   sonarqube:
     image: sonarqube:8.9.7-community
