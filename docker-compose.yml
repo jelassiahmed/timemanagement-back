@@ -1,19 +1,18 @@
 version: '3.8'
 
 services:
-  oracle-db:
-    image: gvenzl/oracle-xe:18.4.0-slim
-    container_name: oracle-db-container
+  mysql-db:
+    image: mysql:latest
+    container_name: mysql-db-container
     ports:
-        - "1521:1521"
+      - "3306:3306"
     environment:
-        - ORACLE_SID=XE
-        - ORACLE_PDB=XEPDB1
-        - ORACLE_PWD=admin
-        - ORACLE_PASSWORD=admin
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: PFE
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     volumes:
-        - oracle-data:/opt/oracle/oradata
-    command: [ "/bin/sh", "/opt/oracle/scripts/setup/setup.sh" ]
+      - mysql-data:/var/lib/mysql
 
   sonarqube:
     image: sonarqube:8.9.7-community
@@ -50,7 +49,7 @@ services:
 
   timemanagement-app:
     depends_on:
-      - oracle-db
+      - mysql-db
       - keycloak
       - camunda
     image: ahmedjelassi/timemanagement-app:latest
@@ -58,28 +57,25 @@ services:
     ports:
       - '8888:8888'
     environment:
-      SPRING_APPLICATION_JSON:
-        '{
-          "spring.datasource.url": "jdbc:oracle:thin:@oracle-db:1521/XE",
-          "spring.datasource.username": "SYS",
-          "spring.datasource.password": "admin",
-          "spring.datasource.driver-class-name": "oracle.jdbc.OracleDriver",
-          "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MyDialect,
-          "spring.jpa.hibernate.ddl-auto": "update",
-          "keycloak.realm": "TimeManagement",
-          "keycloak.auth-server-url": "http://keycloak:8180",
-          "keycloak.ssl-required": "external",
-          "keycloak.resource": "timemanagement-back",
-          "keycloak.bearer-only": true,
-          "keycloak.credentials.secret": "yLp947ZBPCj2ZvjfVxruFmOAWJB1Nqzv",
-          "keycloak.use-resource-role-mappings": true,
-          "keycloak.principal-attribute": "preferred_username"
-        }'
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url": "jdbc:mysql://mysql-db:3306/PFE",
+        "spring.datasource.username": "root",
+        "spring.datasource.password": "root",
+        "spring.datasource.driver-class-name": "com.mysql.cj.jdbc.Driver",
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "keycloak.realm": "TimeManagement",
+        "keycloak.auth-server-url": "http://keycloak:8180",
+        "keycloak.ssl-required": "external",
+        "keycloak.resource": "timemanagement-back",
+        "keycloak.bearer-only": true,
+        "keycloak.credentials.secret": "yLp947ZBPCj2ZvjfVxruFmOAWJB1Nqzv",
+        "keycloak.use-resource-role-mappings": true,
+        "keycloak.principal-attribute": "preferred_username"
+      }'
 
 volumes:
   SonarQube_data:
   SonarQube_extensions:
   SonarQube_logs:
   nexus_data:
-  dbdata:
-  oracle-data:
+  mysql-data:
