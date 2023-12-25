@@ -36,7 +36,6 @@ services:
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
-      - KEYCLOAK_IMPORT=/tmp/realm-export.json
     ports:
       - "8180:8180"
     volumes:
