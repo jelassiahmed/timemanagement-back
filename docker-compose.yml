@@ -56,21 +56,21 @@ services:
     environment:
       SPRING_APPLICATION_JSON:
         '{
-          "spring.datasource.url": "jdbc:oracle:thin:@oracle-db:1521/XE",
-          "spring.datasource.username": "SYS",
-          "spring.datasource.password": "admin",
-          "spring.datasource.driver-class-name": "oracle.jdbc.OracleDriver",
-          "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MyDialect,
-          "spring.jpa.hibernate.ddl-auto": "update",
-          "keycloak.realm": "TimeManagement",
-          "keycloak.auth-server-url": "http://keycloak:8180",
-          "keycloak.ssl-required": "external",
-          "keycloak.resource": "timemanagement-back",
-          "keycloak.bearer-only": true,
-          "keycloak.credentials.secret": "yLp947ZBPCj2ZvjfVxruFmOAWJB1Nqzv",
-          "keycloak.use-resource-role-mappings": true,
-          "keycloak.principal-attribute": "preferred_username"
-        }'
+            "spring.datasource.url": "jdbc:oracle:thin:@oracle-db:1521/XE",
+            "spring.datasource.username": "SYS",
+            "spring.datasource.password": "admin",
+            "spring.datasource.driver-class-name": "oracle.jdbc.OracleDriver",
+            "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MyDialect",
+            "spring.jpa.hibernate.ddl-auto": "update",
+            "keycloak.realm": "TimeManagement",
+            "keycloak.auth-server-url": "http://keycloak:8180",
+            "keycloak.ssl-required": "external",
+            "keycloak.resource": "timemanagement-back",
+            "keycloak.bearer-only": true,
+            "keycloak.credentials.secret": "yLp947ZBPCj2ZvjfVxruFmOAWJB1Nqzv",
+            "keycloak.use-resource-role-mappings": true,
+            "keycloak.principal-attribute": "preferred_username"
+          }'
 
 volumes:
   SonarQube_data:
