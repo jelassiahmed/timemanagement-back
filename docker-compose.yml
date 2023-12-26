@@ -61,7 +61,7 @@ services:
             "spring.datasource.username": "ahmed",
             "spring.datasource.password": "ahmed",
             "spring.datasource.driver-class-name": "oracle.jdbc.OracleDriver",
-            "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.OracleDialect",
+            "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.Oracle18cDialect",
             "spring.jpa.hibernate.ddl-auto": "update",
             "keycloak.realm": "TimeManagement",
             "keycloak.auth-server-url": "http://keycloak:8180",
