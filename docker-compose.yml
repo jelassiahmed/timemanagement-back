@@ -44,6 +44,13 @@ services:
     image: camunda/camunda-bpm-platform:latest
     ports:
       - "8889:8888"  # Map Camunda's internal port 8080 to external port 8888
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-db:1521/XE
+      - SPRING_DATASOURCE_USERNAME=ahmed
+      - SPRING_DATASOURCE_PASSWORD=ahmed
+      - CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE=true
+      - CAMUNDA_BPM_DATABASE_TYPE=oracle
+      - CAMUNDA_BPM_HISTORY_LEVEL=full
 
   timemanagement-app:
     depends_on:
@@ -51,7 +58,6 @@ services:
       - keycloak
       - camunda
     image: ahmedjelassi/timemanagement-app:latest
-    restart: on-failure
     ports:
       - '8888:8888'
     environment:
