@@ -76,7 +76,8 @@ services:
             "keycloak.bearer-only": true,
             "keycloak.credentials.secret": "yLp947ZBPCj2ZvjfVxruFmOAWJB1Nqzv",
             "keycloak.use-resource-role-mappings": true,
-            "keycloak.principal-attribute": "preferred_username"
+            "keycloak.principal-attribute": "preferred_username",
+            "camunda.bpm.schema-update": "true"
           }'
 
 volumes:
