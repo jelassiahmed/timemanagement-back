@@ -13,6 +13,7 @@ services:
       - ORACLE_PASSWORD=admin
     volumes:
       - oracle-data:/opt/oracle/oradata
+      - ./oracle-scripts.sql:/docker-entrypoint-initdb.d/init.sql
     command: [ "/bin/sh", "/opt/oracle/scripts/setup/setup.sh" ]
 
   sonarqube:
@@ -57,8 +58,8 @@ services:
       SPRING_APPLICATION_JSON:
         '{
             "spring.datasource.url": "jdbc:oracle:thin:@oracle-db:1521/XE",
-            "spring.datasource.username": "SYS",
-            "spring.datasource.password": "admin",
+            "spring.datasource.username": "ahmed",
+            "spring.datasource.password": "ahmed",
             "spring.datasource.driver-class-name": "oracle.jdbc.OracleDriver",
             "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MyDialect",
             "spring.jpa.hibernate.ddl-auto": "update",
